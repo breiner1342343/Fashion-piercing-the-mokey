@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Piercing The Monkey's</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../static/css/style_index.css">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <img src="../static/img/logo_fashion.png" alt="Logo Fashion Breiner" width="80px">
+            </div>
+            <div class="search">
+                <input type="text" placeholder="Buscar..." id="searchInput">
+                <button type="button"><i class='bx bx-search'></i></button>  
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Inicio</a></li>
+                <li><a href="#about">Nosotros</a></li>
+                <li><a href="#products">Productos</a></li>
+                <li><a href="#contact">Contacto</a></li>
+                <li>
+                    <a href="#carrito" class="cart-icon">
+                        <i class='bx bx-cart' id="icarrito"></i>
+                    </a>
+                </li>
+                <li><a href="login.html" target="_blank" class="btn-login-nav">Inicia Sesión</a></li>
+            </ul>
+            
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>   
+                <span></span>
+            </div>
+            
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="#home">Inicio</a>
+                <a href="#products">Productos</a>
+                <a href="#about">Nosotros</a>
+                <a href="#contact">Contacto</a>
+                <a href="#carrito">Carrito</a>
+                <a href="login.html" target="_blank" class="login">Inicia Sesión</a>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <h1>FASHION PIERCING THE MONKEY'S</h1>
+            <p>Expresa tu verdadera esencia. Piercings exclusivos y la mejor selección de artículos para fumar, diseñados para resaltar tu estilo único.</p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn-main">FASHION</a>
+                <a href="#all-products" class="btn-secondary">SMOKE <i class='bx bx-bong'></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="metrics" class="about-section">
+        <div class="section-title">
+            <h2>NOSOTROS</h2>
+            <p>Sabías que contamos con:</p>
+        </div>
+        <div class="mini-cards">
+            <div class="m-card">
+                <div class="m-icon"><i class='bx bx-award'></i></div>
+                <div class="m-info">
+                    <h3>+<span class="count-number" data-target="11">0</span> Años</h3>
+                    <p>De Experiencia</p>
+                </div>
+            </div>
+            <div class="m-card">
+                <div class="m-icon blue"><i class='bx bx-map-pin'></i></div>
+                <div class="m-info">
+                    <h3><span class="count-number" data-target="3">0</span> Sedes</h3>
+                    <p>Diferentes</p>
+                </div>
+            </div>
+            <div class="m-card schedule-card">
+                <div class="m-icon orange"><i class='bx bx-time'></i></div>
+                <div class="m-info-table">
+                    <h3>Horarios de Atención</h3>
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Días</th>
+                                <th>Horario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lunes a Sábado</td>
+                                <td>9:00 AM - 6:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Domingos</td>
+                                <td>Cerrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about" class="about-section">
+        <div class="about-card">
+            <h2>Sobre Nosotros</h2>
+            <p>En <strong>Fashion Piercing The Monkey's</strong> nos dedicamos a la curaduría y distribución de joyería fina y accesorios para fumar, diseñados para resaltar tu estilo único.</p>
+        </div>
+    </section>
+
+<section id="products" class="products-section">
+        <div class="section-title">
+            <h2>Colección Destacada</h2>
+            <p>Nuestra selección de productos más populares.</p>
+        </div>
+
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                
+                <div class="carousel-group">
+                    
+                    <div class="product-card">
+                        <div class="badge">Joyería</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/nostril-colores.png" alt="Nostril Basica">
+                        </div>
+                        <div class="product-details">
+                            <h3>Nostril Basica</h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Piercing sutil y moderno con circon en la punta de acero quirúrgico.</p>
+                            <div class="price-row">
+                                <span class="price">$2.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="badge">Piercing</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/nostril-circon.png" alt="Nostril Con Circon">
+                        </div>
+                        <div class="product-details">
+                            <h3>Nostril Con Circon</h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Piercing sutil y moderno con circon mejor elaborado en la punta de acero quirúrgico.</p>
+                            <div class="price-row">
+                                <span class="price">$3.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="badge">Joyería</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/nostril-aro.png" alt="Aro De Nostril">
+                        </div>
+                        <div class="product-details">
+                            <h3>Aro De Nostril </h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Elegante piercing con circones en los bordes elaborado con acero quirúrgico, brillante ideal para ocasiones especiales.</p>
+                            <div class="price-row">
+                                <span class="price">$15.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="badge">Piercing</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/ombligo-diseño.png" alt="Ombligo Con Diseño">
+                        </div>
+                        <div class="product-details">
+                            <h3>Ombligo Con Diseño</h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Piercing del ombligo con sutil y moderno diseños con circon rosado de acero quirúrgico.</p>
+                            <div class="price-row">
+                                <span class="price">$15.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="carousel-group" aria-hidden="true">
+                    
+                    <div class="product-card">
+                        <div class="badge">Joyería</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/nostril-colores.png" alt="Nostril Basica">
+                        </div>
+                        <div class="product-details">
+                            <h3>Nostril Basica</h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Piercing sutil y moderno con circon en la punta de acero quirúrgico.</p>
+                            <div class="price-row">
+                                <span class="price">$2.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="badge">Piercing</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/nostril-circon.png" alt="Nostril Con Circon">
+                        </div>
+                        <div class="product-details">
+                            <h3>Nostril Con Circon</h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Piercing sutil y moderno con circon mejor elaborado en la punta de acero quirúrgico.</p>
+                            <div class="price-row">
+                                <span class="price">$3.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="badge">Joyería</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/nostril-aro.png" alt="Aro De Nostril">
+                        </div>
+                        <div class="product-details">
+                            <h3>Aro De Nostril </h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Elegante piercing con circones en los bordes elaborado con acero quirúrgico, brillante ideal para ocasiones especiales.</p>
+                            <div class="price-row">
+                                <span class="price">$15.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="badge">Piercing</div>
+                        <div class="product-img-placeholder">
+                            <img src="../static/img/porductos/ombligo-diseño.png" alt="Ombligo Con Diseño">
+                        </div>
+                        <div class="product-details">
+                            <h3>Ombligo Con Diseño</h3>
+                            <p class="mat">Material: Metálica</p>
+                            <p class="desc">Piercing del ombligo con sutil y moderno diseños con circon rosado de acero quirúrgico.</p>
+                            <div class="price-row">
+                                <span class="price">$15.000</span>
+                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+<section id="all-products" class="products-section">
+        <div class="section-title">
+            <h2>Catálogo Completo</h2>
+            <p>Descubre toda nuestra línea de piercings, joyería y accesorios.</p>
+        </div>
+
+        <div class="products-grid">
+            
+            <div class="product-card">
+                <div class="badge">Joyería</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/nostril-aro.png" alt="Aro De Nostril">
+                </div>
+                <div class="product-details">
+                    <h3>Aro De Nostril </h3>
+                    <p class="mat">Material: Metálica</p>
+                    <p class="desc">Elegante piercing con circones en los bordes elaborado con acero quirúrgico, brillante ideal para ocasiones especiales.</p>
+                    <div class="price-row">
+                        <span class="price">$15.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="badge">Joyería</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/labre-circon.png" alt="Labre Con Circones">
+                </div>
+                <div class="product-details">
+                    <h3>Labre Con Circones</h3>
+                    <p class="mat">Material: Metálica</p>
+                    <p class="desc">Barra sutil y moderno con circon en la punta de acero quirúrgico.</p>
+                    <div class="price-row">
+                        <span class="price">$10.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="badge">Joyería</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/nostril-colores.png" alt="Nostril Basica">
+                </div>
+                <div class="product-details">
+                    <h3>Nostril Basica</h3>
+                    <p class="mat">Material: Metálica</p>
+                    <p class="desc">Piercing sutil y moderno con circon en la punta de acero quirúrgico.</p>
+                    <div class="price-row">
+                        <span class="price">$2.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="badge">Piercing</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/nostril-circon.png" alt="Nostril Con Circon">
+                </div>
+                <div class="product-details">
+                    <h3>Nostril Con Circon</h3>
+                    <p class="mat">Material: Metálica</p>
+                    <p class="desc">Piercing sutil y moderno con circon mejor elaborado en la punta de acero quirúrgico.</p>
+                    <div class="price-row">
+                        <span class="price">$3.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="badge">Piercing</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/ombligo-diseño.png" alt="Ombligo Con Diseño">
+                </div>
+                <div class="product-details">
+                    <h3>Ombligo Con Diseño</h3>
+                    <p class="mat">Material: Metálica</p>
+                    <p class="desc">Piercing del ombligo con sutil y moderno diseños con circon rosado de acero quirúrgico.</p>
+                    <div class="price-row">
+                        <span class="price">$15.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="badge">Smoke</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/ocb.png" alt="OCB Carburacion Lenta">
+                </div>
+                <div class="product-details">
+                    <h3>OCB Carburacion Lenta</h3>
+                    <p class="mat">Material: Papper</p>
+                    <p class="desc">Papper OCB de carburacion lents con acabado de alta calidad fabricados con materiales 100% naturales (como lino o cáñamo) y usan pegamento vegetal (goma arábiga).</p>
+                    <div class="price-row">
+                        <span class="price">$4.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="product-card">
+                <div class="badge">Smoke</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/smoking.png" alt="Smoking Carburacion Lenta">
+                </div>
+                <div class="product-details">
+                    <h3>Smoking Carburacion Lenta</h3>
+                    <p class="mat">Material: Papper</p>
+                    <p class="desc">Papper Smoking de carburacion lents con acabado de alta calidad fabricados con materiales 100% naturales.</p>
+                    <div class="price-row">
+                        <span class="price">$4.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="product-card">
+                <div class="badge">Smoke</div>
+                <div class="product-img-placeholder">
+                    <img src="../static/img/porductos/blunt-hig-hemp.png" alt="Blunt Hig Hemp">
+                </div>
+                <div class="product-details">
+                    <h3>Blunt Hig Hemp </h3>
+                    <p class="mat">Material: Blunt</p>
+                    <p class="desc">Papper Blunt Hig Hemp de carburacion lenta con relajantes naturales como el +CBD fabricados con materiales 100% naturales.</p>
+                    <div class="price-row">
+                        <span class="price">$6.000</span>
+                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                    </div>
+                </div>
+            </div>
+</section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>Canales de Atención</h2>
+                <p>¿Tienes dudas o deseas hacer un pedido personalizado? Escríbenos directamente o búscanos en nuestras plataformas.</p>
+                
+                <div class="info-links">
+                    <div class="info-item">
+                        <i class='bx bxs-envelope'></i>
+                        <span>contacto@fashionbreiner.com</span>
+                    </div>
+                    <div class="info-item">
+                        <i class='bx bxs-phone'></i>
+                        <span>+57 320 765 5279</span>
+                    </div>
+                </div>
+
+                <div class="social-media">
+                    <h3>Síguenos en Redes</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon facebook"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="social-icon instagram"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="social-icon tiktok"><i class='bx bxl-tiktok'></i></a>
+                        <a href="#" class="social-icon whatsapp"><i class='bx bxl-whatsapp'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-container">
+                <h3>Envíanos un mensaje</h3>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nombre Completo</label>
+                        <input type="text" id="name" required placeholder="Ej. Ana Martínez">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" required placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensaje / Consulta</label>
+                        <textarea id="message" rows="4" required placeholder="Cuéntanos qué producto te interesa..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 Fashion Piercing The Monkey's. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../static/js/index.js"></script>
+</body>
+</html>

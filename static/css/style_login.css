@@ -1,0 +1,319 @@
+/* --- RESET GENERAL --- */
+:root {
+    --orange: #ffae00;
+    --black: #000220;
+    --blue: #37e8ff;
+    --white: #fff;
+    --dark: #1a1a2e;
+    --card-bg: #16213e;
+    --transition: all 0.3s ease;
+}
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #000000; 
+    overflow-x: hidden;
+} 
+
+#videoFondo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 95%;
+    z-index: -1; 
+    object-fit: cover;
+}
+a { text-decoration: none; }
+li { list-style: none; }
+/* --- HEADER Y NAVEGACIÓN --- */
+
+.header {
+    background: #ffae0081;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.4);
+}
+
+.nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    gap: 15px;
+}
+
+.nav-links  {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    text-decoration: none;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.nav-links a:hover { color: var(--orange); }
+.cart-icon i { font-size: 24px; color: var(--blue); }
+
+.btn-login-nav {
+    border: 2px solid var(--orange);
+    padding: 6px 15px;
+    border-radius: 20px;
+    color: var(--orange) !important;
+    font-weight: 600;
+    transition: var(--transition);
+}
+.btn-login-nav:hover {
+    background: var(--orange);
+    color: var(--black) !important;
+}
+
+/* --- Buscador --- */
+.search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.search input {
+    width: 100%;
+    padding: 8px 15px;
+    border: 2px solid var(--blue);
+    border-radius: 25px;
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--white);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.search input:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.search button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--blue);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--blue);
+    font-size: 16px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search button:hover {
+    background: var(--blue);
+    color: var(--black);
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(90vh - 80px); 
+    padding: 20px;
+}
+
+.formulario {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0);
+    border: 2px solid rgb(255, 149, 0);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 0 25px rgba(255, 149, 0, 0.01);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.formulario h1 {
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgb(255, 149, 0);
+}
+
+.datos {
+    position: relative; 
+    margin: 20px 0;
+    width: 100%;
+}
+
+.datos input {
+    width: 100%;
+    padding: 15px 45px 15px 20px; 
+    background: transparent;
+    border: 2px solid rgb(255, 149, 0);
+    border-radius: 40px;
+    outline: none;
+    font-size: 16px;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.datos input:focus {
+    box-shadow: 0 0 15px rgb(255, 149, 0);
+    background: rgba(255, 149, 0, 0.05);
+}
+
+.datos input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.datos i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%); 
+    font-size: 20px;
+    color: rgb(255, 149, 0);
+}
+
+.recordar {
+    display: center;
+    justify-content: flex-end;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.recordar a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.recordar a:hover {
+    color: #37fff8;
+    text-decoration: underline;
+}
+
+.boton {
+    width: 100%;
+    height: 45px;
+    background: rgba(255, 149, 0, 0.714);
+    border: none;
+    border-radius: 40px;
+    box-shadow: 0 4px 15px rgba(255, 149, 0, 0.699);
+    cursor: pointer;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 600;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.boton:hover {
+    background: #ffaa33;
+    transform: scale(1.02);
+}
+
+.registrase {
+    font-size: 14.5px;
+    margin-top: 20px;
+}
+
+.registrase a {
+    color: rgb(255, 149, 0);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.registrase a:hover {
+    color: #37fff8;
+    text-decoration: underline;
+}
+
+/* --- MENÚ MÓVIL --- */
+@media (min-width: 768px) {
+    .nav-links { display: flex; }
+    .mobile-menu { display: none !important; }
+    .mobile-menu-btn { display: none; }
+}
+
+@media (max-width: 767px) {
+    .nav-links { display: none; }
+    
+    .mobile-menu-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .mobile-menu-btn span {
+        width: 100%;
+        height: 3px;
+        background: #ffffff;
+        transition: 0.3s ease;
+        border-radius: 2px;
+    }
+
+    /* Transformación a "X" */
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    .mobile-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 149, 0, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        padding: 1rem 0;
+        flex-direction: column;
+    }
+
+    .mobile-menu.active {
+        display: flex;
+    }
+
+    .mobile-menu a {
+        color: white;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .mobile-menu a:hover {
+        background: rgba(255,255,255,0.1);
+        color: #37fff8;
+    }
+}

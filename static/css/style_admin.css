@@ -1,0 +1,420 @@
+:root {
+    --orange: #ffae00;
+    --black: #000220;
+    --blue: #37e8ff;
+    --white: #fff;
+    --dark: #1a1a2e;
+    --card-bg: #16213e;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--black);
+    color: var(--white);
+    display: flex;
+    overflow-x: hidden;
+}
+
+a { text-decoration: none; }
+li { list-style: none; }
+h1, h2, h3 { color: var(--orange); }
+
+/* --- Ocultar Checkboxes de Control --- */
+.menu-checkbox, .dropdown-check {
+    display: none;
+}
+
+/* --- Botones --- */
+.btn, .btn-primary {
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition);
+    display: inline-block;
+    text-align: center;
+}
+
+.btn {
+    background: var(--orange);
+    color: var(--black);
+}
+
+.btn:hover {
+    background: transparent;
+    color: var(--orange);
+    border-color: var(--orange);
+}
+
+.btn-primary {
+    background: var(--blue);
+    color: var(--black);
+}
+
+.btn-primary:hover {
+    background: transparent;
+    color: var(--blue);
+    border-color: var(--blue);
+}
+
+/* --- Menú Lateral (Sidebar) --- */
+.sidebar {
+    position: fixed;
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(180deg, var(--dark), var(--black));
+    transition: var(--transition);
+    z-index: 1000;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.5);
+    left: 0;
+}
+
+.brand-name {
+    padding: 25px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.brand-name h1 {
+    font-size: 1.3rem;
+    background: linear-gradient(45deg, var(--orange), var(--blue));
+    -webkit-text-fill-color: transparent;
+}
+
+.con-menu ul { padding: 20px 0; }
+
+.con-menu ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 25px;
+    color: rgba(255,255,255,0.7);
+    border-left: 4px solid transparent;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+.con-menu ul li a:hover,
+.con-menu ul li a.active {
+    border-left-color: var(--orange);
+    background: rgba(255,174,0,0.1);
+    color: var(--white);
+}
+
+.con-menu ul li i { font-size: 22px; }
+
+/* --- Contenido Principal --- */
+.main-content {
+    position: relative;
+    width: calc(100% - 260px);
+    left: 260px;
+    min-height: 100vh;
+    transition: var(--transition);
+}
+
+.header {
+    background: var(--dark);
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    flex: 1;
+}
+
+.menu-toggle i {
+    font-size: 30px;
+    color: var(--orange);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+}
+
+.menu-toggle i:hover {
+    color: var(--blue);
+}
+
+/* --- Buscador --- */
+.search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.search input[type="text"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 25px;
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.search input[type="text"]:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: rgba(255,255,255,0.1);
+}
+
+.search button {
+    background: var(--orange);
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--black);
+    font-size: 18px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search button:hover {
+    background: var(--blue);
+    transform: scale(1.1);
+}
+
+/* --- Dropdown Añadir (CÓDIGO NUEVO) --- */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 130%;
+    right: 0;
+    background: var(--dark);
+    min-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.dropdown-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: rgba(255,255,255,0.8);
+    transition: var(--transition);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dropdown-menu li:last-child a { border-bottom: none; }
+
+.dropdown-menu li a:hover {
+    background: rgba(255,174,0,0.1);
+    color: var(--orange);
+}
+
+/* Muestra el menú cuando el checkbox está activo */
+.dropdown-check:checked ~ .dropdown-menu {
+    display: block;
+}
+
+/* --- Lógica del Menú sin JavaScript --- */
+.menu-checkbox:checked ~ .sidebar {
+    left: -260px;
+}
+.menu-checkbox:checked ~ .main-content {
+    width: 100%;
+    left: 0;
+}
+
+/* --- Cards --- */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 25px 30px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255,174,0,0.15);
+    border-color: var(--orange);
+}
+
+.card-number { font-size: 2rem; color: var(--orange); }
+.card .box h3 { color: rgba(255,255,255,0.6); font-weight: 400; font-size: 0.95rem; margin-top: 5px; }
+
+.icon-case i {
+    font-size: 45px;
+    color: var(--orange);
+    opacity: 0.7;
+}
+
+/* --- Tablas --- */
+.content-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+    padding: 0 30px 30px;
+}
+
+.table-container {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 15px;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+    text-align: left;
+    padding: 12px 8px;
+    color: var(--orange);
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255,174,0,0.3);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.8);
+    font-size: 0.9rem;
+}
+
+tbody tr:hover td { background: rgba(255,255,255,0.05); }
+
+.estado {
+    background: rgba(255,174,0,0.2);
+    color: var(--orange);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.estado.entregado {
+    background: rgba(55, 232, 255, 0.2);
+    color: var(--blue);
+}
+
+.btn-ver {
+    background: var(--blue);
+    color: var(--black);
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    transition: var(--transition);
+}
+
+.btn-ver:hover {
+    background: transparent;
+    color: var(--blue);
+    border-color: var(--blue);
+}
+
+/* ==========================================
+   LÓGICA DE APARTADOS INTERCAMBIABLES (SIN JS)
+   ========================================== */
+
+.content-sections {
+    padding: 0;
+}
+
+.section-card {
+    background: var(--card-bg);
+    padding: 30px;
+    margin: 25px 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.section-card p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 5px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.default-tab {
+    display: block;
+}
+
+.tab-content:target {
+    display: block !important;
+}
+
+.content-sections:has(section:target:not(#dashboard-section)) .default-tab {
+    display: none;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    .sidebar { left: -260px; }
+    .main-content { width: 100%; left: 0; }
+    
+    .menu-checkbox:checked ~ .sidebar { left: 0; }
+    .menu-checkbox:checked ~ .main-content { left: 0; width: 100%; }
+
+    .content-2 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .cards { grid-template-columns: 1fr; padding: 15px; }
+    .content-2 { padding: 0 15px 15px; }
+    .header-left { gap: 15px; }
+    .search { max-width: 200px; }
+    .header { padding: 15px; }
+}

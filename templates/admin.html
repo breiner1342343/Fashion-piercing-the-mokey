@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Fashion Piercing</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../static/css/style_admin.css">
+</head>
+<body>
+
+    <input type="checkbox" id="menu-toggle-check" class="menu-checkbox">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-name">
+            <h1>FASHION PIERCING</h1>
+        </div>
+        <nav class="con-menu">
+            <ul>
+                <li><a href="#dashboard-section"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a href="#clientes"><i class='bx bxs-user-detail'></i> Clientes</a></li>
+                <li><a href="#Pedidos"><i class='bx bxs-package'></i> Pedidos</a></li>
+                <li><a href="#reportes"><i class='bx bx-bar-chart-alt'></i> Reportes de Ventas</a></li>
+                <li><a href="#agregar-producto"><i class='bx bx-add-to-queue'></i> Agregar Producto</a></li>
+                <li><a href="#cerrar-sesion"><i class='bx bx-log-in'></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content" id="main-content">
+        <header class="header">
+            <div class="header-left">
+                <label for="menu-toggle-check" class="menu-toggle" id="menu-toggle">
+                    <i class='bx bx-menu'></i>
+                </label>
+                <div class="search">
+                    <input type="text" placeholder="Buscar..." id="searchInput">
+                    <button type="button"><i class='bx bx-search'></i></button>  
+                    <div class="dropdown">
+                        <input type="checkbox" id="dropdown-toggle" class="dropdown-check">
+                        <label for="dropdown-toggle" class="btn dropdown-btn">
+                            <i class='bx bx-plus'></i> Añadir
+                        </label>
+                        <ul class="dropdown-menu">
+                            <li><a href="#agregar-producto"><i class='bx bx-package'></i> Nuevo Producto</a></li>
+                            <li><a href="#clientes"><i class='bx bx-user-plus'></i> Nuevo Cliente</a></li>
+                            <li><a href="#reportes"><i class='bx bx-cart-add'></i> Registrar Venta</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-sections">
+
+            <section id="dashboard-section" class="tab-content default-tab">
+                <div class="cards">
+                    <div class="card">
+                        <div class="box">
+                            <h2 class="card-number">2,000</h2>
+                            <h3>Visitas</h3>
+                        </div>
+                        <div class="icon-case"><i class='bx bx-show'></i></div>
+                    </div>
+                    <div class="card">
+                        <div class="box">
+                            <h2 class="card-number">1,850</h2>
+                            <h3>Ventas</h3>
+                        </div>
+                        <div class="icon-case"><i class='bx bx-cart'></i></div>
+                    </div>
+                    <div class="card">
+                        <div class="box">
+                            <h2 class="card-number">+30</h2>
+                            <h3>Mensajes</h3>
+                        </div>
+                        <div class="icon-case"><i class='bx bx-message-dots'></i></div>
+                    </div>
+                    <div class="card">
+                        <div class="box">
+                            <h2 class="card-number">+$45K</h2>
+                            <h3>Ganancias</h3>
+                        </div>
+                        <div class="icon-case"><i class='bx bx-trending-up'></i></div>
+                    </div>
+                </div>
+
+                <div class="content-2">
+                    <div class="table-container">
+                        <div class="title">
+                            <h2>Pedidos Recientes</h2>
+                            <a href="#" class="btn-primary">Ver Todos</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr><th>Id_Pedido</th><th>Nombre</th><th>Apellido</th><th>Teléfono</th><th>Correo</th><th>Pago</th><th>Estado</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>#01</td><td>Mrs</td><td>Stiven</td><td>300 0393 460</td><td>stiven@mail.com</td><td>$100.000</td><td><span class="estado">Pendiente</span></td></tr>
+                                    <tr><td>#02</td><td>Sergio</td><td>Caho</td><td>311 2911 270</td><td>sergio@mail.com</td><td>$120.000</td><td><span class="estado entregado">Entregado</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="clientes" class="tab-content">
+                <div class="section-card">
+                    <h2><i class='bx bxs-user-detail'></i> Gestión de Clientes</h2>
+                    <p>Aquí puedes ver la lista de clientes registrados en la tienda.</p>
+                    <div class="table-container" style="margin-top: 20px;">
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr><th>ID</th><th>Cliente</th><th>Correo</th><th>Teléfono</th><th>Acciones</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>#01</td><td>Ana Martínez</td><td>ana@mail.com</td><td>+57 300...</td><td><a href="#" class="btn-ver">Editar</a></td></tr>
+                                    <tr><td>#02</td><td>Carlos Pérez</td><td>carlos@mail.com</td><td>+57 311...</td><td><a href="#" class="btn-ver">Editar</a></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="reportes" class="tab-content">
+                <div class="section-card">
+                    <h2><i class='bx bxs-group'></i> Reportes y Estadísticas</h2>
+                    <p>Analiza el rendimiento y métricas generales de tu negocio.</p>
+                    <div class="cards" style="padding: 20px 0 0 0;">
+                        <div class="card">
+                            <div class="box"><h2>85%</h2><h3>Conversión</h3></div>
+                        </div>
+                        <div class="card">
+                            <div class="box"><h2>120</h2><h3>Nuevos Usuarios</h3></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="Pedidos" class="tab-content">
+                <div class="section-card">
+                    <h2><i class='bx bxs-package'></i> Historial de Ventas</h2>
+                    <div class="table-container" style="margin-top: 20px;">
+                        
+                        <div class="title">
+                            <h2>Últimos Pedidos</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr><th>Nombre</th><th>Apellido</th><th>Pago</th><th>Estado</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Mrs</td><td>Stiven</td><td>$120</td><td><span class="estado">Pendiente</span></td></tr>
+                                    <tr><td>Sergio</td><td>Caho</td><td>$120</td><td><span class="estado entregado">Entregado</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="title" style="margin-top: 30px;">
+                            <h2>Detalle de Productos Vendidos</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr><th>Producto</th><th>Material</th><th>Cant.</th><th>Total</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Collar dorado</td><td>Metálica</td><td>2</td><td>$40.000</td></tr>
+                                    <tr><td>Anillo plata</td><td>Metálica</td><td>1</td><td>$15.000</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="agregar-producto" class="tab-content">
+                <div class="section-card">
+                    <h2><i class='bx bx-log-in'></i> Registrar Nuevo Ingreso</h2>
+                    <p>Formulario manual para añadir stock o registrar una venta física.</p>
+                    <form style="max-width: 400px; margin-top: 20px;">
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label style="display:block; margin-bottom: 5px;">Nombre del Producto</label>
+                            <input type="text" placeholder="Ej. Pulsera Cuero" style="width:100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label style="display:block; margin-bottom: 5px;">Categoría</label>
+                            <select style="width:100%; padding: 8px; border-radius: 5px;"><option>Joyería</option><option>Accesorio</option></select>
+                        </div>
+                        <button type="button" class="btn">Guardar Ingreso</button>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</body>
+</html>
