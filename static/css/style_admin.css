@@ -27,12 +27,11 @@ a { text-decoration: none; }
 li { list-style: none; }
 h1, h2, h3 { color: var(--orange); }
 
-/* --- Ocultar Checkboxes de Control --- */
 .menu-checkbox, .dropdown-check {
     display: none;
 }
 
-/* --- Botones --- */
+/*Botones*/
 .btn, .btn-primary {
     padding: 8px 16px;
     border-radius: 5px;
@@ -66,7 +65,7 @@ h1, h2, h3 { color: var(--orange); }
     border-color: var(--blue);
 }
 
-/* --- Menú Lateral (Sidebar) --- */
+/* Menu Lateral*/
 .sidebar {
     position: fixed;
     width: 260px;
@@ -198,7 +197,6 @@ h1, h2, h3 { color: var(--orange); }
     transform: scale(1.1);
 }
 
-/* --- Dropdown Añadir (CÓDIGO NUEVO) --- */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -240,7 +238,6 @@ h1, h2, h3 { color: var(--orange); }
     display: block;
 }
 
-/* --- Lógica del Menú sin JavaScript --- */
 .menu-checkbox:checked ~ .sidebar {
     left: -260px;
 }
@@ -363,9 +360,7 @@ tbody tr:hover td { background: rgba(255,255,255,0.05); }
     border-color: var(--blue);
 }
 
-/* ==========================================
-   LÓGICA DE APARTADOS INTERCAMBIABLES (SIN JS)
-   ========================================== */
+/* LÓGICA DE APARTADOS INTERCAMBIABLES  */
 
 .content-sections {
     padding: 0;
@@ -400,7 +395,7 @@ tbody tr:hover td { background: rgba(255,255,255,0.05); }
     display: none;
 }
 
-/* --- Responsive --- */
+
 @media (max-width: 900px) {
     .sidebar { left: -260px; }
     .main-content { width: 100%; left: 0; }

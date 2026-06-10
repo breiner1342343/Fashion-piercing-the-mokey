@@ -1,4 +1,4 @@
-/* VARIABLES GLOBALES */
+
 :root {
     --orange: #ffae00;
     --black: #000220;
@@ -8,8 +8,6 @@
     --card-bg: #16213e;
     --transition: all 0.3s ease;
 }
-
-/* RESET GENERAL */
 * {
     margin: 0;
     padding: 0;
@@ -27,7 +25,6 @@ body {
 a { text-decoration: none; }
 li { list-style: none; }
 
-/* REGLAS DE LA CABECERA COMPLETA */
 .header {
     background: #ffae0081;
     backdrop-filter: blur(10px);
@@ -65,7 +62,7 @@ li { list-style: none; }
 .nav-links a:hover { color: var(--orange); }
 .cart-icon i { font-size: 24px; color: var(--blue); }
 
-/* --- Buscador --- */
+/*Buscador */
 .search {
     display: flex;
     align-items: center;
@@ -109,7 +106,7 @@ li { list-style: none; }
     color: var(--black);
 }
 
-/* SECCIÓN HERO (BIENVENIDA) */
+/* SECCIÓN BINVENIDA */
 .hero-section {
     height: 75vh;
     display: flex;
@@ -176,7 +173,7 @@ li { list-style: none; }
 .btn-secondary { border: 2px solid var(--blue); color: var(--blue); }
 .btn-secondary:hover { background: var(--blue); color: var(--black); transform: translateY(-3px); }
 
-/* MAQUETACIÓN GLOBAL DE SECCIONES */
+/*  SECCIONES */
 .section-title { text-align: center; margin-bottom: 40px; }
 .section-title h2 { color: var(--orange); font-size: 2rem; }
 .section-title p { color: rgba(255,255,255,0.5); font-size: 0.95rem; margin-top: 5px; }
@@ -187,9 +184,7 @@ li { list-style: none; }
     margin: 0 auto;
 }
 
-/* ===================================================
-   TARJETAS DE ESTADÍSTICAS (ZOOM + BRILLO NARANJA)
-   =================================================== */
+/*CARDS DE ESTADÍSTICAS */
 .mini-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -249,9 +244,7 @@ li { list-style: none; }
 .schedule-table th { color: var(--blue); border-bottom: 1px solid rgba(55, 232, 255, 0.2); text-transform: uppercase; font-weight: 600; }
 .schedule-table td { color: rgba(255, 255, 255, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
-/* ==========================================
-   DISEÑO EXCLUSIVO DEL CARRUSEL INFINITO
-   ========================================== */
+/*  DISEÑO  DEL CARRUSEL */
 .carousel-container {
     overflow: hidden;
     width: 100%;
@@ -295,9 +288,7 @@ li { list-style: none; }
     100% { transform: translateX(-100%); }
 }
 
-/* ===================================================
-   TARJETAS DE PRODUCTOS (ZOOM + BRILLO AZUL)
-   =================================================== */
+/* CARDS DE PRODUCTOS  */
 .product-card {
     background: var(--card-bg);
     border-radius: 15px;
@@ -329,9 +320,6 @@ li { list-style: none; }
     z-index: 2;
 }
 
-/* ===================================================
-   AJUSTE DE IMÁGENES EN LOS PRODUCTOS
-   =================================================== */
 .product-img-placeholder {
     height: 200px;
     background: rgba(255,255,255,0.02);
@@ -377,9 +365,6 @@ li { list-style: none; }
 }
 .btn-add:hover { background: var(--white); transform: scale(1.1); }
 
-/* ===================================================
-   CUADRÍCULA PARA "TODOS LOS PRODUCTOS"
-   =================================================== */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -478,13 +463,12 @@ li { list-style: none; }
     color: rgba(255,255,255,0.4);
 }
 
-/* RESPONSIVE DESIGN */
 @media (max-width: 990px) {
     .nav { flex-direction: column; gap: 15px; padding: 15px; }
     .search { max-width: 100%; }
 } 
 
-/* RESPONSIVE DESIGN - COMPUTADORAS */
+/* COMPUTADORAS */
 @media (min-width: 768px) {
     .nav-links { 
         display: flex; 

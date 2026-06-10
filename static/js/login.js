@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // ==========================================
-    // 1. LÓGICA DE INTERACTIVIDAD DEL MENÚ MÓVIL
-    // ==========================================
+    //  LÓGICA DE INTERACTIVIDAD DEL MENÚ MÓVIL
     const menuBtn = document.getElementById("mobileMenuBtn");
     const mobileMenu = document.getElementById("mobileMenu");
 

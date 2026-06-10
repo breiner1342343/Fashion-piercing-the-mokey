@@ -1,4 +1,3 @@
-/* --- RESET GENERAL --- */
 :root {
     --orange: #ffae00;
     --black: #000220;
@@ -275,7 +274,6 @@ li { list-style: none; }
         border-radius: 2px;
     }
 
-    /* Transformación a "X" */
     .mobile-menu-btn.active span:nth-child(1) {
         transform: translateY(9px) rotate(45deg);
     }
