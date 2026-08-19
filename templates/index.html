@@ -18,18 +18,22 @@
                 <input type="text" placeholder="Buscar..." id="searchInput">
                 <button type="button"><i class='bx bx-search'></i></button>  
             </div>
-            <ul class="nav-links">
-                <li><a href="#home">Inicio</a></li>
-                <li><a href="#about">Nosotros</a></li>
-                <li><a href="#products">Productos</a></li>
-                <li><a href="#contact">Contacto</a></li>
-                <li>
-                    <a href="#carrito" class="cart-icon">
-                        <i class='bx bx-cart' id="icarrito"></i>
-                    </a>
-                </li>
-                <li><a href="login.html" target="_blank" class="btn-login-nav">Inicia Sesión</a></li>
-            </ul>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="#about">Nosotros</a></li>
+            <li><a href="#products">Productos</a></li>
+            <li><a href="#contact">Contacto</a></li>
+            <li>
+                <a href="#carrito" class="cart-icon">
+                    <i class='bx bx-cart' id="icarrito"></i>
+                </a>
+            </li>
+            
+            <!-- Elemento para manejar por JS -->
+            <li id="user-nav-container">
+                <a href="/login" class="btn-login-nav">Inicia Sesión</a>
+            </li>
+        </ul>
             
             <div class="mobile-menu-btn" id="mobileMenuBtn">
                 <span></span>
@@ -38,12 +42,21 @@
             </div>
             
             <div class="mobile-menu" id="mobileMenu">
-                <a href="#home">Inicio</a>
+                <a href="/">Inicio</a>
                 <a href="#products">Productos</a>
                 <a href="#about">Nosotros</a>
                 <a href="#contact">Contacto</a>
                 <a href="#carrito">Carrito</a>
-                <a href="login.html" target="_blank" class="login">Inicia Sesión</a>
+                
+                <!-- Condicional del Usuario en el Menú Móvil -->
+                {% if session.get('user_name') %}
+                <div class="mobile-user-info">
+                    <span><i class='bx bx-user-circle'></i> Bienvenido, <strong>{{ session['user_name'] }}</strong></span>
+                    <a href="/logout" class="login">Cerrar Sesión</a>
+                </div>
+                {% else %}
+                <a href="/login" class="login">Inicia Sesión</a>
+                {% endif %}
             </div>
         </nav>
     </header>
@@ -113,7 +126,7 @@
         </div>
     </section>
 
-<section id="products" class="products-section">
+    <section id="products" class="products-section">
         <div class="section-title">
             <h2>Colección Destacada</h2>
             <p>Nuestra selección de productos más populares.</p>
@@ -262,7 +275,7 @@
         </div>
     </section>
 
-<section id="all-products" class="products-section">
+    <section id="all-products" class="products-section">
         <div class="section-title">
             <h2>Catálogo Completo</h2>
             <p>Descubre toda nuestra línea de piercings, joyería y accesorios.</p>
@@ -397,7 +410,8 @@
                     </div>
                 </div>
             </div>
-</section>
+        </div>
+    </section>
 
     <section id="contact" class="contact-section">
         <div class="contact-container">

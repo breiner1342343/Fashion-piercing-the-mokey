@@ -18,3 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const userNav = document.getElementById('user-nav-container');
+    const userName = localStorage.getItem('user_name'); // O tu método de sesión
+
+    if (userName) {
+        userNav.innerHTML = `
+            <span class="welcome-text">
+                <i class='bx bx-user-circle'></i> Bienvenido, <strong>${userName}</strong>
+            </span>
+            <a href="/logout" class="btn-logout" title="Cerrar Sesión"><i class='bx bx-log-out'></i></a>
+        `;
+    }
+});

@@ -22,10 +22,10 @@
                 <button type="button"><i class='bx bx-search'></i></button>  
             </div>
             <ul class="nav-links">
-                <li><a href="#home">Inicio</a></li>
-                <li><a href="#about">Nosotros</a></li>
-                <li><a href="#products">Productos</a></li>
-                <li><a href="#contact">Contacto</a></li>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/">Nosotros</a></li>
+                <li><a href="/">Productos</a></li>
+                <li><a href="/">Contacto</a></li>
                 <li>
                     <a href="#carrito" class="cart-icon">
                         <i class='bx bx-cart' id="icarrito"></i>
@@ -40,11 +40,11 @@
             </div>
             
             <div class="mobile-menu" id="mobileMenu">
-                <a href="#home">Inicio</a>
-                <a href="#products">Productos</a>
-                <a href="#about">Nosotros</a>
-                <a href="#contact">Contacto</a>
-                <a href="#carrito">Carrito</a>
+                <a href="/">Inicio</a>
+                <a href="/">Productos</a>
+                <a href="/">Nosotros</a>
+                <a href="/">Contacto</a>
+                <a href="/">Carrito</a>
             </div>
         </nav>
     </header>
@@ -56,13 +56,13 @@
 
         <div class="formulario">
             <h1>Bienvenid@</h1>
-            <form action="#" method="post">
+            <form action="/iniciar_sesion" method="POST">
                 <div class="datos">
-                    <input type="email" name="email" required placeholder="Correo electrónico"> 
+                    <input type="email" name="correo" required placeholder="Correo electrónico"> 
                     <i class='bx bx-user'></i>
                 </div>
                 <div class="datos">
-                    <input type="password" name="password" required placeholder="Contraseña">
+                    <input type="password" name="contraseña" required placeholder="Contraseña">
                     <i class='bx bx-lock-alt'></i>
                 </div>
                 <div class="recordar">
@@ -70,7 +70,7 @@
                 </div>
                 <button class="boton" type="submit">Entrar</button>
                 <div class="registrase">
-                    <p>Quiero <a href="#">registrarme</a></p>
+                    <p>Quiero <a href="/registro">registrarme</a></p>
                 </div>
             </form>
         </div>
