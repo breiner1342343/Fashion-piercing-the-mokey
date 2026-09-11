@@ -56,6 +56,16 @@
 
         <div class="formulario">
             <h1>Bienvenid@</h1>
+            <!-- Bloque para mostrar las alertas -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alerta {{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
             <form action="/iniciar_sesion" method="POST">
                 <div class="datos">
                     <input type="email" name="correo" required placeholder="Correo electrónico"> 
@@ -68,7 +78,7 @@
                 <div class="recordar">
                     <a href="#">¿Olvidaste la contraseña?</a>
                 </div>
-                <button class="boton" type="submit">Entrar</button>
+                <button class="boton" type="submit">Iniciar Secion</button>
                 <div class="registrase">
                     <p>Quiero <a href="/registro">registrarme</a></p>
                 </div>

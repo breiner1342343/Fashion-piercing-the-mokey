@@ -29,12 +29,15 @@
                 </a>
             </li>
             
-            <!-- Elemento para manejar por JS -->
-            <li id="user-nav-container">
-                <a href="/login" class="btn-login-nav">Inicia Sesión</a>
-            </li>
-        </ul>
-            
+             {% if session.get('nombre') %}
+                 <!-- Lo que ve el usuario cuando SÍ ha iniciado sesión -->
+                 <span>Hola, {{ session['nombre'] }}</span>
+                 <a href="/cerrar_sesion">Cerrar Sesión</a>
+             {% else %}
+                 <!-- Lo que ve un visitante cuando NO ha iniciado sesión -->
+                 <a href="/login">Iniciar Sesión</a>
+                 <a href="/registro">Registrarse</a>
+             {% endif %}
             <div class="mobile-menu-btn" id="mobileMenuBtn">
                 <span></span>
                 <span></span>   
