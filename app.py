@@ -26,8 +26,8 @@ def inicio():
 def registro():
     return render_template('cliente/registro.html')
 @app.route('/admin')
-def registro():
-    return render_template('admin/cliente/admin.html')
+def admin():
+    return render_template('admin/admin.html')
 @app.route('/login')
 def login():
     return render_template('cliente/login.html')
@@ -35,7 +35,7 @@ def login():
 @app.route('/cerrar_sesion')
 def cerrar_sesion():
     session.clear()  # Limpia toda la sesión (nombre, rol, etc.)
-    return redirect('/')
+    return redirect('/login')
 
 @app.route('/iniciar_sesion', methods=['POST'])
 def iniciar_sesion():
