@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Fashion Piercing</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../static/css/style_crear.css">
+</head>
+<body>
+
+    <!-- Control Toggle Menú Móvil -->
+    <input type="checkbox" id="menu-toggle-check" class="menu-checkbox">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-name">
+            <h1>FASHION PIERCING</h1>
+        </div>
+        <nav class="con-menu">
+            <ul>
+                <li><a href="#dashboard-section"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a href="#clientes"><i class='bx bxs-user-detail'></i> Clientes</a></li>
+                <li><a href="#Pedidos"><i class='bx bxs-package'></i> Pedidos</a></li>
+                <li><a href="#reportes"><i class='bx bx-bar-chart-alt'></i> Reportes de Ventas</a></li>
+                <li><a href="/crear"><i class='bx bx-add-to-queue'></i> Agregar Producto</a></li>
+                <li><a href="/login"><i class='bx bx-log-in'></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="main-content" id="main-content">
+        
+        <!-- Header Superior -->
+        <header class="header">
+            <div class="header-left">
+                <label for="menu-toggle-check" class="menu-toggle" id="menu-toggle">
+                    <i class='bx bx-menu'></i>
+                </label>
+                <div class="search">
+                    <input type="text" placeholder="Buscar..." id="searchInput">
+                    <button type="button"><i class='bx bx-search'></i></button>  
+                </div>
+                
+                <!-- Menú Desplegable Añadir -->
+                <div class="dropdown">
+                    <input type="checkbox" id="dropdown-toggle" class="dropdown-check">
+                    <label for="dropdown-toggle" class="btn dropdown-btn">
+                        <i class='bx bx-plus'></i> Añadir
+                    </label>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onclick="toggleVista(true); return false;"><i class='bx bx-package'></i> Nuevo Producto</a></li>
+                        <li><a href="#clientes"><i class='bx bx-user-plus'></i> Nuevo Cliente</a></li>
+                        <li><a href="#reportes"><i class='bx bx-cart-add'></i> Registrar Venta</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenedor Dinámico -->
+        <div class="container my-4" style="max-width: 1000px; width: 90%;">
+
+            <!-- ALERTAS FLASH DE FLASK -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <!-- SECCIÓN 1: TABLA DE PRODUCTOS (Visible por defecto) -->
+            <div id="tabla-productos-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="titulo-seccion">Inventario de Productos</h3>
+                    <button type="button" class="btn btn-success" onclick="toggleVista(true)">
+                        <i class='bx bx-plus'></i> Agregar Producto
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producto in productos %}
+                            <tr>
+                                <td>
+                                    {% if producto.imagen %}
+                                        <img src="../static/uploads/{{ producto.imagen }}" alt="{{ producto.nombre }}" class="img-thumb">
+                                    {% else %}
+                                        <span class="no-img">Sin Imagen</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ producto.nombre }}</td>
+                                <td>{{ producto.descripcion }}</td>
+                                <td>${{ "{:,.2f}".format(producto.precio) }}</td>
+                                <td>{{ producto.stock }}</td>
+                                <td>
+                                    <!-- Botón Actualizar/Editar -->
+                                    <a href="/editar_producto/{{ producto.id }}" class="btn-icon edit" title="Actualizar">
+                                        <i class='bx bx-edit-alt'></i>
+                                    </a>
+                                    <!-- Botón Eliminar -->
+                                    <a href="/eliminar_producto/{{ producto.id }}" class="btn-icon delete" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                        <i class='bx bx-trash'></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4" style="color: #94a3b8;">
+                                    No hay productos registrados aún.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: FORMULARIO DE REGISTRO (Oculto por defecto) -->
+            <div id="form-producto-section" style="display: none;">
+                <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+                    <div class="card-header">
+                        <h4 class="mb-0">Registrar Nuevo Producto</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/guardar_producto" method="POST" enctype="multipart/form-data">
+                            
+                            <!-- 1. Imagen -->
+                            <div class="mb-3">
+                                <label for="imagen" class="form-label">Imagen del Producto</label>
+                                <input type="file" name="imagen" id="imagen" class="form-control" accept="image/*">
+                            </div>
+
+                            <!-- 2. Nombre -->
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre del Producto</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej. Piercing Titanium Labret" required>
+                            </div>
+
+                            <!-- 3. Descripción -->
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ej. Piercing de titanio grado implante con rosca interna..." required></textarea>
+                            </div>
+
+                            <!-- 4. Precio -->
+                            <div class="mb-3">
+                                <label for="precio" class="form-label">Precio ($)</label>
+                                <input type="number" step="0.01" name="precio" id="precio" class="form-control" placeholder="Ej. 25000.00" required>
+                            </div>
+
+                            <!-- 5. Stock -->
+                            <div class="mb-3">
+                                <label for="stock" class="form-label">Stock (Cantidad disponible)</label>
+                                <input type="number" name="stock" id="stock" class="form-control" placeholder="Ej. 50" min="0" required>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success">Guardar Producto</button>
+                                <button type="button" class="btn btn-secondary" onclick="toggleVista(false)">Cancelar / Volver</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Script de control de vista -->
+    <script>
+        function toggleVista(mostrarFormulario) {
+            const tablaSection = document.getElementById('tabla-productos-section');
+            const formSection = document.getElementById('form-producto-section');
+
+            if (mostrarFormulario) {
+                tablaSection.style.display = 'none';
+                formSection.style.display = 'block';
+            } else {
+                tablaSection.style.display = 'block';
+                formSection.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="../static/js/crear.js"></script>
+</body>
+</html>
