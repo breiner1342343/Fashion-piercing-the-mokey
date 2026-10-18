@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Piercing The Monkey's</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_catalogo.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo_fashion.png') }}" alt="Logo Fashion Breiner">
+            </div>
+
+            <!-- Buscador -->
+            <div class="search">
+                <input type="text" placeholder="Buscar..." id="searchInput">
+                <button type="button"><i class='bx bx-search'></i></button>  
+            </div>
+
+            <!-- Enlaces de navegación de escritorio -->
+            <ul class="nav-links">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/about">Nosotros</a></li>
+                <li><a href="/catalogo">Productos</a></li>
+                <li><a href="#contact">Contacto</a></li>
+                <li>
+                    <a href="/carrito" class="cart-icon" title="Carrito">
+                        <i class='bx bx-cart' id="icarrito"></i>
+                    </a>
+                </li>
+                
+                {% if session.get('nombre') %}
+                    <li><span class="user-greeting">Hola, {{ session['nombre'] }}</span></li>
+                    <li><a href="/cerrar_sesion" class="btn-auth">Cerrar Sesión</a></li>
+                {% else %}
+                    <li><a href="/login" class="btn-auth">Iniciar Sesión</a></li>
+                    <li><a href="/registro" class="btn-auth">Registrarse</a></li>
+                {% endif %}
+            </ul>
+
+            <!-- Botón Menú Móvil -->
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>  
+                <span></span>
+            </div>
+        </nav>
+
+        <!-- Menú desplegable para dispositivos móviles -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">Inicio</a>
+            <a href="/catalogo">Productos</a>
+            <a href="/about">Nosotros</a>
+            <a href="#contact">Contacto</a>
+            <a href="/carrito">Carrito</a>
+            
+            {% if session.get('nombre') %}
+                <div class="mobile-user-info">
+                    <span><i class='bx bx-user-circle'></i> Hola, <strong>{{ session['nombre'] }}</strong></span>
+                    <a href="/cerrar_sesion" class="login">Cerrar Sesión</a>
+                </div>
+            {% else %}
+                <a href="/login" class="login">Iniciar Sesión</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Catálogo de Productos -->
+    <div class="products-section">
+        <div class="section-title">
+            <h2>Catálogo de Productos</h2>
+            <p>Explora nuestra colección disponible</p>
+        </div>
+
+        <div class="products-grid">
+            {% for producto in productos %}
+            <div class="product-card">
+                <!-- Badge de categoría -->
+                <span class="badge">{{ producto.tipo }}</span>
+                
+                <!-- Contenedor de la imagen -->
+                <div class="product-img-placeholder">
+                    <img src="{{ url_for('static', filename='img/productos/' ~ producto.imagen) }}" alt="{{ producto.nombre }}">
+                </div>
+
+                <!-- Detalles del producto -->
+                <div class="product-details">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="mat">Material: {{ producto.material }}</p>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 8px;">Disponibles: {{ producto.stock }}</p>
+                    
+                    <!-- Fila de precio y botón de añadir -->
+                    <div class="price-row">
+                        <span class="price">${{ producto.precio }}</span>
+                        <button class="btn-add" data-id="{{ producto.id }}" title="Añadir">
+                            <i class='bx bx-plus'></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p style="color: rgba(255,255,255,0.6); grid-column: 1 / -1; text-align: center; padding: 40px;">
+                No hay productos disponibles en este momento.
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Carrito de Compras -->
+    {% if carrito is defined %}
+    <div class="shopping-cart-container">
+        <h2>🛒 Tu Carrito de Compras</h2>
+        
+        <div class="cart-content">
+            <!-- Lista dinámica de productos -->
+            <div class="cart-items-list">
+                {% for item in carrito %}
+                <div class="cart-item">
+                    <div class="item-img">
+                        <img src="{{ url_for('static', filename='img/productos/' ~ item.imagen) }}" alt="{{ item.nombre }}" style="width: 50px; height: 50px; object-fit: contain;">
+                    </div>
+                    <div class="item-details">
+                        <h4>{{ item.nombre }}</h4>
+                        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Material: {{ item.material }}</p>
+                        <span class="item-price">${{ "%.2f"|format(item.precio) }}</span>
+                    </div>
+                    <div class="item-quantity">
+                        <a href="/actualizar_cantidad/{{ item.id }}/restar" class="qty-btn">-</a>
+                        <span>{{ item.cantidad }}</span>
+                        <a href="/actualizar_cantidad/{{ item.id }}/sumar" class="qty-btn">+</a>
+                    </div>
+                    <div class="item-total" style="font-weight: bold; color: var(--blue);">
+                        ${{ "%.2f"|format(item.precio * item.cantidad) }}
+                    </div>
+                    <a href="/eliminar_item/{{ item.id }}" class="item-remove" title="Eliminar"><i class='bx bx-trash'></i></a>
+                </div>
+                {% else %}
+                <p style="text-align: center; color: rgba(255,255,255,0.6); padding: 30px;">Tu carrito está vacío.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Resumen del pedido -->
+            {% if subtotal is defined %}
+            <div class="cart-summary-box">
+                <h3>Resumen del pedido</h3>
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <span>${{ "%.2f"|format(subtotal) }}</span>
+                </div>
+                <div class="summary-line">
+                    <span>Envío</span>
+                    <span>${{ "%.2f"|format(envio) }}</span>
+                </div>
+                <div class="summary-line total">
+                    <span>Total</span>
+                    <span>${{ "%.2f"|format(total) }}</span>
+                </div>
+                <button class="btn-checkout">Proceder al Pago</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+   
+</body>
+</html>

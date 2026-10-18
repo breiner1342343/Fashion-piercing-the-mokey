@@ -21,10 +21,10 @@
         <ul class="nav-links">
             <li><a href="/">Inicio</a></li>
             <li><a href="#about">Nosotros</a></li>
-            <li><a href="#products">Productos</a></li>
+            <li><a href="/catalogo">Productos</a></li>
             <li><a href="#contact">Contacto</a></li>
             <li>
-                <a href="#carrito" class="cart-icon">
+                <a href="/carrito" class="cart-icon">
                     <i class='bx bx-cart' id="icarrito"></i>
                 </a>
             </li>
@@ -46,10 +46,10 @@
             
             <div class="mobile-menu" id="mobileMenu">
                 <a href="/">Inicio</a>
-                <a href="#products">Productos</a>
+                <a href="/catalogo">Productos</a>
                 <a href="#about">Nosotros</a>
                 <a href="#contact">Contacto</a>
-                <a href="#carrito">Carrito</a>
+                <a href="/carrito">Carrito</a>
                 
                 <!-- Condicional del Usuario en el Menú Móvil -->
                 {% if session.get('user_name') %}
@@ -69,8 +69,8 @@
             <h1>FASHION PIERCING THE MONKEY'S</h1>
             <p>Expresa tu verdadera esencia. Piercings exclusivos y la mejor selección de artículos para fumar, diseñados para resaltar tu estilo único.</p>
             <div class="hero-buttons">
-                <a href="#products" class="btn-main">FASHION</a>
-                <a href="#all-products" class="btn-secondary">SMOKE <i class='bx bx-bong'></i></a>
+                <a href="/catalogo" class="btn-main">FASHION</a>
+                <a href="/catalogo" class="btn-secondary">SMOKE <i class='bx bx-bong'></i></a>
             </div>
         </div>
     </section>

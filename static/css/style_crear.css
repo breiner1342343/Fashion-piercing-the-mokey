@@ -339,6 +339,24 @@ body {
 .card-body {
     padding: 30px 25px !important;
 }
+.img-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.td-descripcion {
+    max-width: 180px;         /* Ancho máximo de la columna */
+    white-space: nowrap;      /* Evita que el texto baje de línea */
+    overflow: hidden;         /* Oculta el sobrante */
+    text-overflow: ellipsis;  /* Coloca los tres puntos suspensivos (...) */
+}
+
+/* Forzar a la tabla a respetar los anchos fijos */
+.table-custom {
+    table-layout: fixed;      
+    width: 100%;
+}
 
 /* Campos del Formulario */
 .form-label {

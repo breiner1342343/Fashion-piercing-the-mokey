@@ -19,12 +19,12 @@
         </div>
         <nav class="con-menu">
             <ul>
-                <li><a href="#dashboard-section"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li><a href="#clientes"><i class='bx bxs-user-detail'></i> Clientes</a></li>
+                <li><a href="/admin"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a href="/crear_cliente"><i class='bx bxs-user-detail'></i> Clientes</a></li>
                 <li><a href="#Pedidos"><i class='bx bxs-package'></i> Pedidos</a></li>
                 <li><a href="#reportes"><i class='bx bx-bar-chart-alt'></i> Reportes de Ventas</a></li>
                 <li><a href="/crear"><i class='bx bx-add-to-queue'></i> Agregar Producto</a></li>
-                <li><a href="/login"><i class='bx bx-log-in'></i> Cerrar Sesión</a></li>
+                <li><a href="/cerrar_session"><i class='bx bx-log-in'></i> Cerrar Sesión</a></li>
             </ul>
         </nav>
     </aside>
@@ -57,3 +57,128 @@
                 </div>
             </div>
         </header>
+
+        <!-- Contenedor Dinámico -->
+        <div class="container my-4" style="max-width: 1000px; width: 90%;">
+
+            <!-- ALERTAS FLASH DE FLASK -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <!-- SECCIÓN 1: TABLA DE clientes (Visible por defecto) -->
+            <div id="tabla-clientes-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="titulo-seccion">Registro de Clientes</h3>
+                    <button type="button" class="btn btn-success" onclick="toggleVista(true)">
+                        <i class='bx bx-plus'></i> Agregar Cliente
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Telefono</th>
+                                <th>Estado</th>
+                                <th>Fecha de Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in clientes %}
+                            <tr>
+                                <td>{{ cliente.id }}</td>
+                                <td>{{ cliente.nombre }}</td>
+                                <td>{{ cliente.correo }}</td>
+                                <td>{{ cliente.telefono }}</td>
+                                <td>{{ cliente.estado }}</td>
+                                <td>{{ cliente.fecha_creacion }}</td>
+                                <td>
+                                    <!-- Botón Actualizar/Editar -->
+                                    <a href="/editar_cliente/{{ cliente.id }}" class="btn-icon edit" title="Actualizar">
+                                        <i class='bx bx-edit-alt'></i>
+                                    </a>
+                                    <!-- Botón Eliminar -->
+                                    <a href="/eliminar_cliente/{{ cliente.id }}" class="btn-icon delete" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">
+                                        <i class='bx bx-trash'></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4" style="color: #94a3b8;">
+                                    No hay clientes registrados aún.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: FORMULARIO DE REGISTRO (Oculto por defecto) -->
+            <div id="form-cliente-section" style="display: none;">
+                <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+                    <div class="card-header">
+                        <h4 class="mb-0">Registrar Nuevo Cliente</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/registrar_cliente" method="POST">
+                            <!-- 1. Nombre -->
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre del Cliente</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej. Juan Pérez" required>
+                            </div>
+                        
+                            <!-- 2. Email -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Ej. juan.perez@example.com" required>
+                            </div>
+                        
+                            <!-- 3. Teléfono -->
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="tel" name="telefono" id="telefono" class="form-control" placeholder="Ej. 323-456-7890" required>
+                            </div>
+                        
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                                <button type="button" class="btn btn-secondary" onclick="toggleVista(false)">Cancelar / Volver</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Script de control de vista -->
+    <script>
+        function toggleVista(mostrarFormulario) {
+            const tablaSection = document.getElementById('tabla-clientes-section');
+            const formSection = document.getElementById('form-cliente-section');
+
+            if (mostrarFormulario) {
+                tablaSection.style.display = 'none';
+                formSection.style.display = 'block';
+            } else {
+                tablaSection.style.display = 'block';
+                formSection.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="../static/js/crear.js"></script>
+</body>
+</html>

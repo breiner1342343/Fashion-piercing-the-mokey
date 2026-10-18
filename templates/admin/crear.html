@@ -87,6 +87,8 @@
                             <tr>
                                 <th>Imagen</th>
                                 <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Material</th>
                                 <th>Descripción</th>
                                 <th>Precio</th>
                                 <th>Stock</th>
@@ -96,15 +98,19 @@
                         <tbody>
                             {% for producto in productos %}
                             <tr>
-                                <td>
-                                    {% if producto.imagen %}
-                                        <img src="../static/uploads/{{ producto.imagen }}" alt="{{ producto.nombre }}" class="img-thumb">
-                                    {% else %}
-                                        <span class="no-img">Sin Imagen</span>
-                                    {% endif %}
-                                </td>
+                            <td>
+                                {% if producto.imagen %}
+                                    <!-- Usamos url_for para que Flask calcule la ruta exacta sin importar la URL actual -->
+                                    <img src="{{ url_for('static', filename='img/productos/' ~ producto.imagen) }}" alt="{{ producto.nombre }}" class="img-thumb">
+                                {% else %}
+                                    <span class="no-img">Sin Imagen</span>
+                                {% endif %}
+                            </td>
                                 <td>{{ producto.nombre }}</td>
-                                <td>{{ producto.descripcion }}</td>
+                                <!-- Si en la base de datos están vacíos, puedes usar un filtro para que no muestre None -->
+                                <td>{{ producto.tipo if producto.tipo else 'N/A' }}</td>
+                                <td>{{ producto.material if producto.material else 'N/A' }}</td>
+                                <td class="td-descripcion" title="{{ producto.descripcion }}"> {{ producto.descripcion }}
                                 <td>${{ "{:,.2f}".format(producto.precio) }}</td>
                                 <td>{{ producto.stock }}</td>
                                 <td>
@@ -120,7 +126,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="6" class="text-center py-4" style="color: #94a3b8;">
+                                <td colspan="8" class="text-center py-4" style="color: #94a3b8;">
                                     No hay productos registrados aún.
                                 </td>
                             </tr>
@@ -139,31 +145,43 @@
                     <div class="card-body">
                         <form action="/guardar_producto" method="POST" enctype="multipart/form-data">
                             
-                            <!-- 1. Imagen -->
+                            <!-- Imagen -->
                             <div class="mb-3">
                                 <label for="imagen" class="form-label">Imagen del Producto</label>
                                 <input type="file" name="imagen" id="imagen" class="form-control" accept="image/*">
                             </div>
 
-                            <!-- 2. Nombre -->
+                            <!-- Nombre -->
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre del Producto</label>
                                 <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej. Piercing Titanium Labret" required>
                             </div>
 
-                            <!-- 3. Descripción -->
+                            <!-- Tipo (Agregado después del nombre) -->
+                            <div class="mb-3">
+                                <label for="tipo" class="form-label">Tipo</label>
+                                <input type="text" name="tipo" id="tipo" class="form-control" placeholder="Ej. Joyería, Insumo..." required>
+                            </div>
+
+                            <!-- Material (Agregado después del tipo) -->
+                            <div class="mb-3">
+                                <label for="material" class="form-label">Material</label>
+                                <input type="text" name="material" id="material" class="form-control" placeholder="Ej. Titanio, Acero Quirúrgico..." required>
+                            </div>
+
+                            <!-- Descripción -->
                             <div class="mb-3">
                                 <label for="descripcion" class="form-label">Descripción</label>
                                 <textarea name="descripcion" id="descripcion" class="form-control" rows="3" placeholder="Ej. Piercing de titanio grado implante con rosca interna..." required></textarea>
                             </div>
 
-                            <!-- 4. Precio -->
+                            <!-- Precio -->
                             <div class="mb-3">
                                 <label for="precio" class="form-label">Precio ($)</label>
                                 <input type="number" step="0.01" name="precio" id="precio" class="form-control" placeholder="Ej. 25000.00" required>
                             </div>
 
-                            <!-- 5. Stock -->
+                            <!-- Stock -->
                             <div class="mb-3">
                                 <label for="stock" class="form-label">Stock (Cantidad disponible)</label>
                                 <input type="number" name="stock" id="stock" class="form-control" placeholder="Ej. 50" min="0" required>

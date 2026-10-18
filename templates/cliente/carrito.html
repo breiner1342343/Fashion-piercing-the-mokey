@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Piercing The Monkey's</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_carrito.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo_fashion.png') }}" alt="Logo Fashion Breiner">
+            </div>
+
+            <!-- Buscador -->
+            <div class="search">
+                <input type="text" placeholder="Buscar..." id="searchInput">
+                <button type="button"><i class='bx bx-search'></i></button>  
+            </div>
+
+            <!-- Enlaces de navegación de escritorio -->
+            <ul class="nav-links">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/about">Nosotros</a></li>
+                <li><a href="/catalogo">Productos</a></li>
+                <li><a href="/contacto">Contacto</a></li>
+                <li>
+                    <a href="/carrito" class="cart-icon" title="Carrito">
+                        <i class='bx bx-cart' id="icarrito"></i>
+                    </a>
+                </li>
+                
+                {% if session.get('nombre') %}
+                    <span class="user-greeting">Hola, {{ session['nombre'] }}</span>
+                    <li><a href="/cerrar_sesion" class="btn-auth">Cerrar Sesión</a></li>
+                {% else %}
+                    <li><a href="/login" class="btn-auth">Iniciar Sesión</a></li>
+                    <li><a href="/registro" class="btn-auth">Registrarse</a></li>
+                {% endif %}
+            </ul>
+
+            <!-- Botón Menú Móvil -->
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>  
+                <span></span>
+            </div>
+        </nav>
+
+        <!-- Menú desplegable para dispositivos móviles -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="/">Inicio</a>
+            <a href="#products">Productos</a>
+            <a href="#about">Nosotros</a>
+            <a href="#contact">Contacto</a>
+            <a href="#carrito">Carrito</a>
+            
+            {% if session.get('nombre') %}
+                <div class="mobile-user-info">
+                    <span><i class='bx bx-user-circle'></i> Hola, <strong>{{ session['nombre'] }}</strong></span>
+                    <a href="/cerrar_sesion" class="login">Cerrar Sesión</a>
+                </div>
+            {% else %}
+                <a href="/login" class="login">Iniciar Sesión</a>
+            {% endif %}
+        </div>
+    </header>
+    <body>
+    <h2>Mi Carrito</h2>
+<a href="/catalogo" class="btn btn-primary">
+    Seguir Comprando
+</a>
+<table class="table">
+
+    <thead>
+
+        <tr>
+            <th>Imagen</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+        {% for item in productos %}
+        <tr>
+            <td>
+                 <img src="{{ url_for('static', filename='img/productos/' + item[6]) }}" alt="{{ item[1] }}" width="80">
+            </td>
+            <td>{{ item[2] }}</td>
+            <td>${{ item[3] }}</td>
+            <td>{{ item[4] }}</td>
+            <td>${{ item[5] }}</td>
+            <td>
+                <a href="/eliminarDelCarrito/{{ item[0] }}" class="btn btn-danger"> Eliminar </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h4>Total: ${{ total }}</h4>
+
+<a href="/finalizarCompra" class="btn btn-primary">
+    Finalizar Compra
+</a>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <script>
+            Swal.fire({
+                icon: "{{ category }}",
+                title: "{{ message }}",
+                showConfirmButton: true
+            });
+        </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+</body>
+</html>
