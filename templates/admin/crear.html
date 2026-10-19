@@ -19,8 +19,8 @@
         </div>
         <nav class="con-menu">
             <ul>
-                <li><a href="#dashboard-section"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li><a href="#clientes"><i class='bx bxs-user-detail'></i> Clientes</a></li>
+                <li><a href="/admin"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a href="/crear_cliente"><i class='bx bxs-user-detail'></i> Clientes</a></li>
                 <li><a href="#Pedidos"><i class='bx bxs-package'></i> Pedidos</a></li>
                 <li><a href="#reportes"><i class='bx bx-bar-chart-alt'></i> Reportes de Ventas</a></li>
                 <li><a href="/crear"><i class='bx bx-add-to-queue'></i> Agregar Producto</a></li>
@@ -100,17 +100,15 @@
                             <tr>
                             <td>
                                 {% if producto.imagen %}
-                                    <!-- Usamos url_for para que Flask calcule la ruta exacta sin importar la URL actual -->
                                     <img src="{{ url_for('static', filename='img/productos/' ~ producto.imagen) }}" alt="{{ producto.nombre }}" class="img-thumb">
                                 {% else %}
                                     <span class="no-img">Sin Imagen</span>
                                 {% endif %}
                             </td>
                                 <td>{{ producto.nombre }}</td>
-                                <!-- Si en la base de datos están vacíos, puedes usar un filtro para que no muestre None -->
                                 <td>{{ producto.tipo if producto.tipo else 'N/A' }}</td>
                                 <td>{{ producto.material if producto.material else 'N/A' }}</td>
-                                <td class="td-descripcion" title="{{ producto.descripcion }}"> {{ producto.descripcion }}
+                                <td class="td-descripcion" title="{{ producto.descripcion }}"> {{ producto.descripcion }}</td>
                                 <td>${{ "{:,.2f}".format(producto.precio) }}</td>
                                 <td>{{ producto.stock }}</td>
                                 <td>
@@ -134,6 +132,37 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- CONTROLES DE PAGINACIÓN -->
+                {% if total_paginas > 1 %}
+                <div class="pagination-container">
+                    <ul class="pagination">
+                        <!-- Botón Anterior -->
+                        {% if pagina > 1 %}
+                            <li>
+                                <a href="/crear?pagina={{ pagina - 1 }}" class="page-link">&laquo; Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Números de Página dinámicos -->
+                        {% for p in range(1, total_paginas + 1) %}
+                            <li>
+                                <a href="/crear?pagina={{ p }}" class="page-link {% if p == pagina %}active{% endif %}">
+                                    {{ p }}
+                                </a>
+                            </li>
+                        {% endfor %}
+
+                        <!-- Botón Siguiente -->
+                        {% if pagina < total_paginas %}
+                            <li>
+                                <a href="/crear?pagina={{ pagina + 1 }}" class="page-link">Siguiente &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+
             </div>
 
             <!-- SECCIÓN 2: FORMULARIO DE REGISTRO (Oculto por defecto) -->
@@ -157,13 +186,13 @@
                                 <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej. Piercing Titanium Labret" required>
                             </div>
 
-                            <!-- Tipo (Agregado después del nombre) -->
+                            <!-- Tipo -->
                             <div class="mb-3">
                                 <label for="tipo" class="form-label">Tipo</label>
                                 <input type="text" name="tipo" id="tipo" class="form-control" placeholder="Ej. Joyería, Insumo..." required>
                             </div>
 
-                            <!-- Material (Agregado después del tipo) -->
+                            <!-- Material -->
                             <div class="mb-3">
                                 <label for="material" class="form-label">Material</label>
                                 <input type="text" name="material" id="material" class="form-control" placeholder="Ej. Titanio, Acero Quirúrgico..." required>
@@ -200,21 +229,6 @@
         </div>
     </main>
 
-    <!-- Script de control de vista -->
-    <script>
-        function toggleVista(mostrarFormulario) {
-            const tablaSection = document.getElementById('tabla-productos-section');
-            const formSection = document.getElementById('form-producto-section');
-
-            if (mostrarFormulario) {
-                tablaSection.style.display = 'none';
-                formSection.style.display = 'block';
-            } else {
-                tablaSection.style.display = 'block';
-                formSection.style.display = 'none';
-            }
-        }
-    </script>
-    <script src="../static/js/crear.js"></script>
+    <script src="../static/js/admin.js"></script>
 </body>
 </html>

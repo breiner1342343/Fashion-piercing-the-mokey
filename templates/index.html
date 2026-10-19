@@ -14,10 +14,24 @@
             <div class="logo">
                 <img src="../static/img/logo_fashion.png" alt="Logo Fashion Breiner" width="80px">
             </div>
-            <div class="search">
-                <input type="text" placeholder="Buscar..." id="searchInput">
-                <button type="button"><i class='bx bx-search'></i></button>  
-            </div>
+            <!-- Buscador con caja de sugerencias -->
+            <form action="/catalogo" method="GET" class="search-form" autocomplete="off">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        name="busqueda" 
+                        placeholder="Buscar..." 
+                        value="{{ busqueda if busqueda else '' }}" 
+                        id="searchInput"
+                    >
+                    <button type="submit" class="search-btn" title="Buscar">
+                        <i class='bx bx-search'></i>
+                    </button>
+
+                    <!-- AQUÍ ESTÁ EL CONTENEDOR DE SUGERENCIAS QUE FALTABA -->
+                    <div id="suggestionsBox" class="suggestions-dropdown" style="display: none;"></div>
+                </div>
+            </form>
         <ul class="nav-links">
             <li><a href="/">Inicio</a></li>
             <li><a href="#about">Nosotros</a></li>
@@ -33,6 +47,7 @@
                  <!-- Lo que ve el usuario cuando SÍ ha iniciado sesión -->
                  <span>Hola, {{ session['nombre'] }}</span>
                  <a href="/cerrar_sesion">Cerrar Sesión</a>
+                 <a href="/admin" class="btn-admin">Administrar</a>
              {% else %}
                  <!-- Lo que ve un visitante cuando NO ha iniciado sesión -->
                  <a href="/login">Iniciar Sesión</a>
@@ -59,6 +74,7 @@
                 </div>
                 {% else %}
                 <a href="/login" class="login">Inicia Sesión</a>
+                <a href="/admin" class="btn-admin">Administrar</a>
                 {% endif %}
             </div>
         </nav>

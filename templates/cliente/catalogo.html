@@ -16,11 +16,24 @@
                 <img src="{{ url_for('static', filename='img/logo_fashion.png') }}" alt="Logo Fashion Breiner">
             </div>
 
-            <!-- Buscador -->
-            <div class="search">
-                <input type="text" placeholder="Buscar..." id="searchInput">
-                <button type="button"><i class='bx bx-search'></i></button>  
-            </div>
+            <!-- Buscador con caja de sugerencias -->
+            <form action="/catalogo" method="GET" class="search-form" autocomplete="off">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        name="busqueda" 
+                        placeholder="Buscar..." 
+                        value="{{ busqueda if busqueda else '' }}" 
+                        id="searchInput"
+                    >
+                    <button type="submit" class="search-btn" title="Buscar">
+                        <i class='bx bx-search'></i>
+                    </button>
+
+                    <!-- AQUÍ ESTÁ EL CONTENEDOR DE SUGERENCIAS QUE FALTABA -->
+                    <div id="suggestionsBox" class="suggestions-dropdown" style="display: none;"></div>
+                </div>
+            </form>
 
             <!-- Enlaces de navegación de escritorio -->
             <ul class="nav-links">
@@ -29,8 +42,13 @@
                 <li><a href="/catalogo">Productos</a></li>
                 <li><a href="#contact">Contacto</a></li>
                 <li>
-                    <a href="/carrito" class="cart-icon" title="Carrito">
-                        <i class='bx bx-cart' id="icarrito"></i>
+                    <a href="/carrito" class="cart-icon" title="Carrito" style="position: relative;">
+                        <i class='bx bx-cart' id="icarrito" style="font-size: 1.5rem;"></i>
+                        {% if session.get('total_items') and session.get('total_items') > 0 %}
+                            <span class="cart-badge" style="position: absolute; top: -5px; right: -10px; background: var(--orange, #ffae00); color: #000; border-radius: 50%; padding: 2px 6px; font-size: 0.75rem; font-weight: bold;">
+                                {{ session['total_items'] }}
+                            </span>
+                        {% endif %}
                     </a>
                 </li>
                 
@@ -90,16 +108,18 @@
 
                 <!-- Detalles del producto -->
                 <div class="product-details">
-                    <h3>{{ producto.nombre }}</h3>
+                    <h3 class="producto-titulo">{{ producto.nombre }}</h3>
                     <p class="mat">Material: {{ producto.material }}</p>
                     <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 8px;">Disponibles: {{ producto.stock }}</p>
                     
-                    <!-- Fila de precio y botón de añadir -->
+                    <!-- Fila de precio y botón de añadir por POST -->
                     <div class="price-row">
                         <span class="price">${{ producto.precio }}</span>
-                        <button class="btn-add" data-id="{{ producto.id }}" title="Añadir">
-                            <i class='bx bx-plus'></i>
-                        </button>
+                        <form action="/agregarCarrito/{{ producto.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-add" title="Añadir">
+                                <i class='bx bx-plus'></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -111,61 +131,38 @@
         </div>
     </div>
 
-    <!-- Carrito de Compras -->
-    {% if carrito is defined %}
+    <!-- Carrito de Compras (Si se accede desde la vista integrada) -->
+    {% if productos_carrito is defined %}
     <div class="shopping-cart-container">
         <h2>🛒 Tu Carrito de Compras</h2>
-        
         <div class="cart-content">
-            <!-- Lista dinámica de productos -->
             <div class="cart-items-list">
-                {% for item in carrito %}
+                {% for item in productos_carrito %}
                 <div class="cart-item">
                     <div class="item-img">
-                        <img src="{{ url_for('static', filename='img/productos/' ~ item.imagen) }}" alt="{{ item.nombre }}" style="width: 50px; height: 50px; object-fit: contain;">
+                        <img src="{{ url_for('static', filename='img/productos/' ~ item[6]) }}" alt="{{ item[2] }}" style="width: 50px; height: 50px; object-fit: contain;">
                     </div>
                     <div class="item-details">
-                        <h4>{{ item.nombre }}</h4>
-                        <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Material: {{ item.material }}</p>
-                        <span class="item-price">${{ "%.2f"|format(item.precio) }}</span>
+                        <h4>{{ item[2] }}</h4>
+                        <span class="item-price">${{ "%.2f"|format(item[3]) }}</span>
                     </div>
                     <div class="item-quantity">
-                        <a href="/actualizar_cantidad/{{ item.id }}/restar" class="qty-btn">-</a>
-                        <span>{{ item.cantidad }}</span>
-                        <a href="/actualizar_cantidad/{{ item.id }}/sumar" class="qty-btn">+</a>
+                        <span>Cant: {{ item[4] }}</span>
                     </div>
                     <div class="item-total" style="font-weight: bold; color: var(--blue);">
-                        ${{ "%.2f"|format(item.precio * item.cantidad) }}
+                        ${{ "%.2f"|format(item[5]) }}
                     </div>
-                    <a href="/eliminar_item/{{ item.id }}" class="item-remove" title="Eliminar"><i class='bx bx-trash'></i></a>
+                    <a href="/eliminarDelCarrito/{{ item[0] }}" class="item-remove" title="Eliminar"><i class='bx bx-trash'></i></a>
                 </div>
                 {% else %}
                 <p style="text-align: center; color: rgba(255,255,255,0.6); padding: 30px;">Tu carrito está vacío.</p>
                 {% endfor %}
             </div>
-
-            <!-- Resumen del pedido -->
-            {% if subtotal is defined %}
-            <div class="cart-summary-box">
-                <h3>Resumen del pedido</h3>
-                <div class="summary-line">
-                    <span>Subtotal</span>
-                    <span>${{ "%.2f"|format(subtotal) }}</span>
-                </div>
-                <div class="summary-line">
-                    <span>Envío</span>
-                    <span>${{ "%.2f"|format(envio) }}</span>
-                </div>
-                <div class="summary-line total">
-                    <span>Total</span>
-                    <span>${{ "%.2f"|format(total) }}</span>
-                </div>
-                <button class="btn-checkout">Proceder al Pago</button>
-            </div>
-            {% endif %}
         </div>
     </div>
     {% endif %}
-   
+
+    <!-- SCRIPT DE JAVASCRIPT PARA AUTOCOMPLETADO Y SUGERENCIAS -->
+    <script src="../static/js/catalogo.js"></script>
 </body>
 </html>

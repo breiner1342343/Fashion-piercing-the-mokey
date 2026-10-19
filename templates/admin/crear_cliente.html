@@ -72,7 +72,7 @@
               {% endif %}
             {% endwith %}
 
-            <!-- SECCIÓN 1: TABLA DE clientes (Visible por defecto) -->
+            <!-- SECCIÓN 1: TABLA DE CLIENTES (Visible por defecto) -->
             <div id="tabla-clientes-section">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="titulo-seccion">Registro de Clientes</h3>
@@ -88,7 +88,7 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Correo</th>
-                                <th>Telefono</th>
+                                <th>Teléfono</th>
                                 <th>Estado</th>
                                 <th>Fecha de Registro</th>
                                 <th>Acciones</th>
@@ -116,7 +116,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="6" class="text-center py-4" style="color: #94a3b8;">
+                                <td colspan="7" class="text-center py-4" style="color: #94a3b8;">
                                     No hay clientes registrados aún.
                                 </td>
                             </tr>
@@ -124,6 +124,36 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- CONTROLES DE PAGINACIÓN -->
+                {% if total_paginas > 1 %}
+                <div class="pagination-container">
+                    <ul class="pagination">
+                        <!-- Botón Anterior -->
+                        {% if pagina > 1 %}
+                            <li>
+                                <a href="/crear_cliente?pagina={{ pagina - 1 }}" class="page-link">&laquo; Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Números de Página dinámicos -->
+                        {% for p in range(1, total_paginas + 1) %}
+                            <li>
+                                <a href="/crear_cliente?pagina={{ p }}" class="page-link {% if p == pagina %}active{% endif %}">
+                                    {{ p }}
+                                </a>
+                            </li>
+                        {% endfor %}
+
+                        <!-- Botón Siguiente -->
+                        {% if pagina < total_paginas %}
+                            <li>
+                                <a href="/crear_cliente?pagina={{ pagina + 1 }}" class="page-link">Siguiente &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
             </div>
 
             <!-- SECCIÓN 2: FORMULARIO DE REGISTRO (Oculto por defecto) -->
@@ -134,22 +164,23 @@
                     </div>
                     <div class="card-body">
                         <form action="/registrar_cliente" method="POST">
-                            <!-- 1. Nombre -->
+                            
+                            <!-- Nombre -->
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre del Cliente</label>
                                 <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej. Juan Pérez" required>
                             </div>
                         
-                            <!-- 2. Email -->
+                            <!-- Email -->
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo</label>
                                 <input type="email" name="email" id="email" class="form-control" placeholder="Ej. juan.perez@example.com" required>
                             </div>
                         
-                            <!-- 3. Teléfono -->
+                            <!-- Teléfono -->
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Teléfono</label>
-                                <input type="tel" name="telefono" id="telefono" class="form-control" placeholder="Ej. 323-456-7890" required>
+                                <input type="tel" name="telefono" id="telefono" class="form-control" placeholder="Ej. 3234567890" required>
                             </div>
                         
                             <div class="d-grid gap-2">
@@ -179,6 +210,6 @@
             }
         }
     </script>
-    <script src="../static/js/crear.js"></script>
+    <script src="../static/js/admin.js"></script>
 </body>
 </html>

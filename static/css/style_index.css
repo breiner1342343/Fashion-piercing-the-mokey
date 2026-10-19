@@ -62,48 +62,104 @@ li { list-style: none; }
 .nav-links a:hover { color: var(--orange); }
 .cart-icon i { font-size: 24px; color: var(--blue); }
 
-/*Buscador */
-.search {
+/* ===================================================
+   ESTILOS DE LA BARRA DE BÚSQUEDA Y SUGERENCIAS
+   =================================================== */
+
+.search-form {
     display: flex;
     align-items: center;
-    gap: 10px;
-    width: 100%;
-    max-width: 300px;
 }
 
-.search input {
-    width: 100%;
-    padding: 8px 15px;
-    border: 2px solid var(--blue);
-    border-radius: 25px;
-    background: rgba(0, 0, 0, 0.4);
-    color: var(--white);
-    font-size: 0.9rem;
-    transition: var(--transition);
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.search input:focus {
-    outline: none;
-    border-color: var(--orange);
-    background: rgba(0, 0, 0, 0.6);
+/* Campo de entrada (Input) */
+.search-input-wrapper input {
+    background-color: var(--transition)!important;
+    border: 2px solid #ffffff !important;
+    border-radius: 25px !important;
+    padding: 8px 45px 8px 18px !important;
+    color: #ffffff !important;
+    outline: none !important;
+    font-size: 14px !important;
+    width: 340px !important;
+    transition: all 0.3s ease !important;
 }
 
-.search button {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid var(--blue);
-    padding: 8px;
+.search-input-wrapper input::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+/* Botón Lupa */
+.search-btn {
+    position: absolute;
+    right: 6px;
+    background: #ca8a04;
+    border: none;
     border-radius: 50%;
-    cursor: pointer;
-    color: var(--blue);
-    font-size: 16px;
-    transition: var(--transition);
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    color: #0f172a;
+    transition: background 0.3s, transform 0.2s;
 }
-.search button:hover {
-    background: var(--blue);
-    color: var(--black);
+
+.search-btn:hover {
+    background: #eab308;
+    transform: scale(1.05);
+}
+
+/* Contenedor Flotante de Sugerencias */
+.suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background-color: #ffae0081;
+    border: 2px solid #ca8a04;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* Título de Sugerencias */
+.suggestions-title {
+    padding: 10px 15px 4px 15px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+/* Cada opción del menú */
+.suggestion-item {
+    padding: 10px 15px;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #ca8a04;
+    color: #0f172a;
+    font-weight: 600;
 }
 
 /* SECCIÓN BINVENIDA */
@@ -350,6 +406,26 @@ li { list-style: none; }
 
 .price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
 .price-row .price { font-size: 1.3rem; font-weight: bold; color: var(--blue); }
+
+.btn-admin {
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue);      /* Fondo azul por defecto */
+    color: #ffffff;               /* Texto blanco */
+    border: 2px solid var(--blue); /* Borde azul */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-admin:hover {
+    background: transparent;      /* Se vuelve transparente al pasar el mouse */
+    color: var(--blue);           /* El texto toma el color azul */
+    transform: translateY(-3px);
+}
 
 .btn-add {
     background: var(--orange);

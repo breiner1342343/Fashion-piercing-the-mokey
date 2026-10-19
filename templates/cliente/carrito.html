@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Piercing The Monkey's</title>
+    <title>Carrito de Compras - Fashion Piercing The Monkey's</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_carrito.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
+    <!-- Header Navigation -->
     <header class="header">
         <nav class="nav">
             <!-- Logo -->
             <div class="logo">
-                <img src="{{ url_for('static', filename='img/logo_fashion.png') }}" alt="Logo Fashion Breiner">
+                <a href="/"><img src="{{ url_for('static', filename='img/logo_fashion.png') }}" alt="Logo Fashion Breiner"></a>
             </div>
 
             <!-- Buscador -->
@@ -22,7 +24,7 @@
                 <button type="button"><i class='bx bx-search'></i></button>  
             </div>
 
-            <!-- Enlaces de navegación de escritorio -->
+            <!-- Enlaces de navegación -->
             <ul class="nav-links">
                 <li><a href="/">Inicio</a></li>
                 <li><a href="/about">Nosotros</a></li>
@@ -31,11 +33,14 @@
                 <li>
                     <a href="/carrito" class="cart-icon" title="Carrito">
                         <i class='bx bx-cart' id="icarrito"></i>
+                        {% if session.get('total_items') and session.get('total_items') > 0 %}
+                            <span class="cart-badge">{{ session['total_items'] }}</span>
+                        {% endif %}
                     </a>
                 </li>
                 
                 {% if session.get('nombre') %}
-                    <span class="user-greeting">Hola, {{ session['nombre'] }}</span>
+                    <li><span class="user-greeting">Hola, <strong>{{ session['nombre'] }}</strong></span></li>
                     <li><a href="/cerrar_sesion" class="btn-auth">Cerrar Sesión</a></li>
                 {% else %}
                     <li><a href="/login" class="btn-auth">Iniciar Sesión</a></li>
@@ -51,13 +56,13 @@
             </div>
         </nav>
 
-        <!-- Menú desplegable para dispositivos móviles -->
+        <!-- Menú desplegable móvil (oculto por CSS) -->
         <div class="mobile-menu" id="mobileMenu">
             <a href="/">Inicio</a>
-            <a href="#products">Productos</a>
-            <a href="#about">Nosotros</a>
-            <a href="#contact">Contacto</a>
-            <a href="#carrito">Carrito</a>
+            <a href="/catalogo">Productos</a>
+            <a href="/about">Nosotros</a>
+            <a href="/contacto">Contacto</a>
+            <a href="/carrito">Carrito</a>
             
             {% if session.get('nombre') %}
                 <div class="mobile-user-info">
@@ -69,61 +74,95 @@
             {% endif %}
         </div>
     </header>
-    <body>
-    <h2>Mi Carrito</h2>
-<a href="/catalogo" class="btn btn-primary">
-    Seguir Comprando
-</a>
-<table class="table">
 
-    <thead>
+    <!-- Contenido Principal -->
+    <main class="shopping-cart-container">
+        <div class="cart-header">
+            <h2><i class='bx bx-shopping-bag'></i> Tu Carrito de Compras</h2>
+            <a href="/catalogo" class="btn-continue">
+                <i class='bx bx-left-arrow-alt'></i> Seguir Comprando
+            </a>
+        </div>
 
-        <tr>
-            <th>Imagen</th>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th></th>
-        </tr>
+        {% if productos and productos|length > 0 %}
+        <div class="cart-content">
+            <!-- Lista de Productos -->
+            <div class="cart-items-list">
+                {% for item in productos %}
+                <div class="cart-item">
+                    <div class="item-img">
+                        <img src="{{ url_for('static', filename='img/productos/' ~ item[6]) }}" alt="{{ item[2] }}">
+                    </div>
 
-    </thead>
+                    <div class="item-details">
+                        <h4>{{ item[2] }}</h4>
+                        <span class="item-price">${{ "%.2f"|format(item[3]) }} c/u</span>
+                    </div>
 
-    <tbody>
-        {% for item in productos %}
-        <tr>
-            <td>
-                 <img src="{{ url_for('static', filename='img/productos/' + item[6]) }}" alt="{{ item[1] }}" width="80">
-            </td>
-            <td>{{ item[2] }}</td>
-            <td>${{ item[3] }}</td>
-            <td>{{ item[4] }}</td>
-            <td>${{ item[5] }}</td>
-            <td>
-                <a href="/eliminarDelCarrito/{{ item[0] }}" class="btn btn-danger"> Eliminar </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                    <!-- Controles de Cantidad con Botones + y - -->
+                    <div class="item-quantity">
+                        <span class="qty-label">Cantidad:</span>
+                        <div class="qty-controls">
+                            <a href="/actualizar_cantidad/{{ item[0] }}/restar" class="qty-btn" title="Disminuir">-</a>
+                            <span class="qty-number">{{ item[4] }}</span>
+                            <a href="/actualizar_cantidad/{{ item[0] }}/sumar" class="qty-btn" title="Aumentar">+</a>
+                        </div>
+                    </div>
 
-<h4>Total: ${{ total }}</h4>
+                    <div class="item-total">
+                        <span class="subtotal-label">Subtotal</span>
+                        <span class="subtotal-amount">${{ "%.2f"|format(item[5]) }}</span>
+                    </div>
 
-<a href="/finalizarCompra" class="btn btn-primary">
-    Finalizar Compra
-</a>
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-        <script>
-            Swal.fire({
-                icon: "{{ category }}",
-                title: "{{ message }}",
-                showConfirmButton: true
-            });
-        </script>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+                    <div class="item-actions">
+                        <a href="/eliminarDelCarrito/{{ item[0] }}" class="item-remove" title="Eliminar Producto">
+                            <i class='bx bx-trash'></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Resumen del Pedido -->
+            <div class="cart-summary-box">
+                <h3>Resumen del Pedido</h3>
+                
+                <div class="summary-line">
+                    <span>Subtotal Productos</span>
+                    <span>${{ "%.2f"|format(total) }}</span>
+                </div>
+                
+                <div class="summary-line">
+                    <span>Envío</span>
+                    <span class="free-shipping">Calculado al pagar</span>
+                </div>
+
+                <div class="summary-line total">
+                    <span>Total Estimado</span>
+                    <span class="total-price">${{ "%.2f"|format(total) }}</span>
+                </div>
+
+                <a href="/finalizarCompra" class="btn-checkout">
+                    Proceder al Pago <i class='bx bx-credit-card'></i>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-cart-state">
+            <i class='bx bx-cart-alt empty-icon'></i>
+            <h3>Tu carrito está vacío</h3>
+            <p>Explora nuestro catálogo y añade tus productos favoritos.</p>
+            <a href="/catalogo" class="btn-checkout inline-btn">Ir al Catálogo</a>
+        </div>
+        {% endif %}
+    </main>
+
+    <script>
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+        if(btn && menu){
+            btn.addEventListener('click', () => menu.classList.toggle('active'));
+        }
+    </script>
 </body>
 </html>

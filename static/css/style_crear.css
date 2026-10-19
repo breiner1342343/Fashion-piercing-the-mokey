@@ -387,6 +387,66 @@ body {
 .form-control::placeholder {
     color: #475569 !important;
 }
+.btn-icon delete{
+        background: rgba(255, 77, 77, 0.15);
+    color: var(--red);
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.btn-icon delete {
+    background: var(--red);
+    color: var(--white);
+    transform: scale(1.05);
+}
+/* --- ESTILOS DE PAGINACIÓN --- */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+    padding: 0;
+}
+
+.page-link {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background: #ffae00;
+    color: #000;
+    border-color: #ffae00;
+}
+
+/* Página activa actual */
+.page-link.active {
+    background: #ffae00;
+    color: #000;
+    font-weight: bold;
+    border-color: #ffae00;
+}
+
 
 input[type="file"].form-control::file-selector-button {
     background-color: #1e293b;

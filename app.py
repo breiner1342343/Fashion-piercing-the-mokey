@@ -16,16 +16,29 @@ app.config['MYSQL_PASSWORD'] = Config.MYSQL_PASSWORD
 app.config['MYSQL_DB'] = Config.MYSQL_DB
  
 mysql.init_app(app)
- 
+
+# Función auxiliar para actualizar el contador del carrito en la sesión
+def actualizar_contador_carrito(id_usuario):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT SUM(cantidad) FROM carrito WHERE id_usuario = %s", (id_usuario,))
+        resultado = cursor.fetchone()
+        cursor.close()
+        session['total_items'] = int(resultado[0]) if resultado and resultado[0] is not None else 0
+    except Exception:
+        session['total_items'] = 0
+
 @app.route('/')
 def inicio():
     nombre_usuario = session.get('nombre')
-    
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT id, nombre, descripcion, precio, stock, imagen FROM productos")
+    cursor.execute("SELECT id, nombre, descripcion, precio, stock, imagen, tipo, material FROM productos")
     productos = cursor.fetchall()
     cursor.close()
     
+    if "id" in session:
+        actualizar_contador_carrito(session["id"])
+        
     return render_template('index.html', nombre=nombre_usuario, productos=productos)
 
 @app.route('/registro')
@@ -38,35 +51,131 @@ def admin():
     cursor.execute("SELECT * FROM productos")
     productos_bd = cursor.fetchall() 
     cursor.close()
-    
     return render_template('admin/admin.html', productos=productos_bd) 
 
 @app.route('/login')
 def login():
-    usuario = session.get('correo')
-    if usuario:
-            session['user_id'] = usuario['id']
-            session['nombre'] = usuario['nombre']
-            print("👉 LOGIN EXITOSO. Sesión actual:", session) # <--- Añade esto
-            return redirect('/catalogo')
     return render_template('cliente/login.html')
+
 @app.route('/crear')
 def crear():
+    # 1. Obtener la página actual desde la URL (por defecto la página 1)
+    pagina = request.args.get("pagina", 1, type=int)
+    registros_por_pagina = 4
+
+    offset = (pagina - 1) * registros_por_pagina
+
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM productos")
-    productos_bd = cursor.fetchall() 
+
+    # 2. Contar total de registros
+    cursor.execute("SELECT COUNT(*) as total FROM productos")
+    res_total = cursor.fetchone()
+    total_registros = res_total['total'] if res_total else 0
+
+    # 3. Obtener solo los 5 productos de la página actual
+    cursor.execute("""
+        SELECT * FROM productos
+        LIMIT %s OFFSET %s
+    """, (registros_por_pagina, offset))
+
+    productos_bd = cursor.fetchall()
     cursor.close()
-    
-    return render_template('admin/crear.html', productos=productos_bd)
+
+    # 4. Calcular cuántas páginas hay en total
+    total_paginas = (total_registros + registros_por_pagina - 1) // registros_por_pagina if total_registros > 0 else 1
+
+    # 5. IMPORTANTE: Enviar pagina y total_paginas a render_template
+    return render_template(
+        'admin/crear.html', 
+        productos=productos_bd,
+        pagina=pagina,
+        total_paginas=total_paginas
+    )
 
 @app.route('/crear_cliente')
-def crear_clienete():
+def crear_cliente():
+    pagina = request.args.get("pagina", 1, type=int)
+    registros_por_pagina = 7
+    offset = (pagina - 1) * registros_por_pagina
+
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("SELECT * FROM clientes")
-    clientes_bd = cursor.fetchall() 
-    cursor.close()
     
-    return render_template('admin/crear_cliente.html', clientes=clientes_bd)
+    # Total de clientes
+    cursor.execute("SELECT COUNT(*) as total FROM clientes")
+    res_total = cursor.fetchone()
+    total_registros = res_total['total'] if res_total else 0
+
+    # Clientes con limit y offset
+    cursor.execute("""
+        SELECT * FROM clientes
+        LIMIT %s OFFSET %s
+    """, (registros_por_pagina, offset))
+    
+    clientes_bd = cursor.fetchall()
+    cursor.close()
+
+    total_paginas = (total_registros + registros_por_pagina - 1) // registros_por_pagina if total_registros > 0 else 1
+
+    return render_template(
+        'admin/crear_cliente.html', 
+        clientes=clientes_bd,
+        pagina=pagina,
+        total_paginas=total_paginas
+    )
+@app.route('/registrar_cliente', methods=['POST'])
+def registrar_cliente():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        correo = request.form['email']
+        telefono = request.form['telefono']
+
+        cursor = mysql.connection.cursor()
+        
+        # Insertar el nuevo cliente en la base de datos
+        cursor.execute("""
+            INSERT INTO clientes (nombre, correo, telefono, estado, fecha_creacion)
+            VALUES (%s, %s, %s, 'Activo', NOW())
+        """, (nombre, correo, telefono))
+        
+        mysql.connection.commit()
+        cursor.close()
+
+        flash('Cliente registrado exitosamente')
+        return redirect('/crear_cliente')
+
+@app.route('/editar_cliente/<int:id>')
+def editar_cliente(id):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute("SELECT * FROM clientes WHERE id = %s", (id,))
+    cliente = cursor.fetchone()
+    cursor.close()
+
+    if not cliente:
+        flash("El cliente no fue encontrado.")
+        return redirect('/crear_cliente')
+
+    return render_template('admin/editar_cliente.html', cliente=cliente)
+
+
+@app.route('/actualizar_cliente/<int:id>', methods=['POST'])
+def actualizar_cliente(id):
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        correo = request.form['email']
+        telefono = request.form['telefono']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            UPDATE clientes 
+            SET nombre = %s, correo = %s, telefono = %s 
+            WHERE id = %s
+        """, (nombre, correo, telefono, id))
+        
+        mysql.connection.commit()
+        cursor.close()
+
+        flash('Cliente actualizado correctamente')
+        return redirect('/crear_cliente')
 
 @app.route('/cerrar_sesion')
 def cerrar_sesion():
@@ -80,28 +189,30 @@ def iniciar_sesion():
 
     cursor = mysql.connection.cursor()
     cursor.execute(
-        "SELECT nombre, contraseña, rol FROM usuarios WHERE correo = %s",
+        "SELECT id, nombre, contraseña, rol FROM usuarios WHERE correo = %s",
         (correo,) 
     )
-
     resultado = cursor.fetchone()
     cursor.close()
 
     if resultado is None:
         flash('El usuario no existe', 'error')
         return redirect('/login')
-    nombre_usuario, contraseña_hash, rol_usuario = resultado
+        
+    id_usuario, nombre_usuario, contraseña_hash, rol_usuario = resultado
 
     if check_password_hash(contraseña_hash, password):
+        session["id"] = id_usuario
         session["rol"] = rol_usuario
         session['nombre'] = nombre_usuario
         
+        actualizar_contador_carrito(id_usuario)
         flash(f'¡Bienvenido de nuevo, {nombre_usuario}!', 'exito')
 
         if rol_usuario == "admin":
             return redirect('/admin')
         else:
-            return redirect('/')
+            return redirect('/catalogo')
 
     flash('Usuario o contraseña incorrectos', 'error')
     return redirect('/login')
@@ -110,7 +221,6 @@ def iniciar_sesion():
 def eliminar_producto(id):
     try:
         cursor = mysql.connection.cursor()
-        
         cursor.execute("SELECT imagen FROM productos WHERE id = %s", (id,))
         producto = cursor.fetchone()
         
@@ -122,47 +232,78 @@ def eliminar_producto(id):
         cursor.execute("DELETE FROM productos WHERE id = %s", (id,))
         mysql.connection.commit()
         cursor.close()
-
         flash('Producto eliminado correctamente', 'exito')
     except Exception as e:
         mysql.connection.rollback()
         flash(f'Error al eliminar el producto: {str(e)}', 'error')
 
     return redirect('/crear')
+@app.route("/editar_producto/<int:id>", methods=["GET", "POST"])
+def editar_producto(id):
+    # USAR DictCursor para que el HTML reconozca producto.id, producto.nombre, etc.
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-@app.route('/guardar_cliente', methods=['POST'])
-def guardar_cliente():
-    nombre = request.form['nombre']
-    correo = request.form['correo']
-    telefono = request.form['telefono']
-    password = request.form['contraseña']
-    confirmar_password = request.form['confirmar_password']
-   
-    if password != confirmar_password:
-        flash('Las contraseñas no coinciden', 'error')
-        return redirect('/registro')
-   
-    password_hash = generate_password_hash(password)
-   
-    cursor = mysql.connection.cursor()
-   
-    sql = '''
-    INSERT INTO usuarios (nombre, correo, telefono, contraseña)
-    VALUES(%s, %s, %s, %s)
-    '''
- 
-    datos = (nombre, correo, telefono, password_hash)
-    cursor.execute(sql, datos)
-    mysql.connection.commit()
+    if request.method == "POST":
+        # 1. Capturar TODOS los campos del formulario
+        nombre = request.form["nombre"]
+        tipo = request.form["tipo"]
+        material = request.form["material"]
+        descripcion = request.form["descripcion"]
+        precio = request.form["precio"]
+        stock = request.form["stock"]
+        imagen = request.files.get("imagen")
+
+        try:
+            # 2. Verificar si el usuario subió una nueva imagen
+            if imagen and imagen.filename != "":
+                # Obtener la imagen anterior
+                cursor.execute("SELECT imagen FROM productos WHERE id=%s", (id,))
+                resultado = cursor.fetchone()
+                imagen_anterior = resultado['imagen'] if resultado else None
+
+                nombre_imagen = secure_filename(imagen.filename)
+                ruta_carpeta = os.path.join(app.root_path, "static", "img", "productos")
+
+                # Eliminar la imagen anterior si existe y no es la por defecto
+                if imagen_anterior and imagen_anterior != "default.png":
+                    archivo_anterior = os.path.join(ruta_carpeta, imagen_anterior)
+                    if os.path.exists(archivo_anterior):
+                        os.remove(archivo_anterior)
+
+                # Guardar la nueva imagen
+                imagen.save(os.path.join(ruta_carpeta, nombre_imagen))
+
+                # Actualizar incluyendo la nueva imagen y todos los campos
+                cursor.execute("""
+                    UPDATE productos
+                    SET nombre=%s, tipo=%s, material=%s, stock=%s, precio=%s, descripcion=%s, imagen=%s
+                    WHERE id=%s
+                """, (nombre, tipo, material, stock, precio, descripcion, nombre_imagen, id))
+            else:
+                # Actualizar los datos SIN modificar la imagen
+                cursor.execute("""
+                    UPDATE productos
+                    SET nombre=%s, tipo=%s, material=%s, stock=%s, precio=%s, descripcion=%s
+                    WHERE id=%s
+                """, (nombre, tipo, material, stock, precio, descripcion, id))
+
+            mysql.connection.commit()
+            flash("Producto actualizado correctamente", "success")
+
+        except Exception as e:
+            flash(f"Error al actualizar producto: {e}", "error")
+
+        finally:
+            cursor.close()
+
+        return redirect("/crear")
+
+    # Si el método es GET, cargamos los datos del producto
+    cursor.execute("SELECT * FROM productos WHERE id=%s", (id,))
+    producto = cursor.fetchone()
     cursor.close()
- 
-    flash('Registro exitoso. Inicia sesión.', 'exito')
-    return redirect('/login')
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
-
-def archivo_permitido(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return render_template("admin/editar_producto.html", producto=producto)
 
 @app.route('/guardar_producto', methods=['POST'])
 def guardar_producto():
@@ -178,20 +319,12 @@ def guardar_producto():
         flash('Debes seleccionar una imagen para el producto', 'error')
         return redirect('/crear')
 
-    if not archivo_permitido(imagen.filename):
-        flash('Formato no permitido. Solo se aceptan PNG, JPG, JPEG, GIF y WEBP.', 'error')
-        return redirect('/crear')
-
     try:
         ext = imagen.filename.rsplit('.', 1)[1].lower()
         nombre_imagen = f"{uuid.uuid4().hex}.{ext}"
-
         ruta_carpeta = os.path.join(app.root_path, "static", "img", "productos")
-        
         os.makedirs(ruta_carpeta, exist_ok=True)
-        
-        ruta_completa = os.path.join(ruta_carpeta, nombre_imagen)
-        imagen.save(ruta_completa)
+        imagen.save(os.path.join(ruta_carpeta, nombre_imagen))
 
         cursor = mysql.connection.cursor()
         cursor.execute(
@@ -200,253 +333,111 @@ def guardar_producto():
         )
         mysql.connection.commit()
         cursor.close()
-
         flash('Producto guardado correctamente', 'exito')
-
     except Exception as e:
         mysql.connection.rollback()
         flash(f'Ocurrió un error al guardar: {str(e)}', 'error')
 
     return redirect('/crear')
 
-@app.route('/registrar_cliente', methods=['POST'])
-def registrar_cliente():
-    nombre = request.form.get("nombre")
-    correo = request.form.get("email")
-    telefono = request.form.get("telefono")
-
-    if not nombre or not correo or not telefono:
-        flash('Por favor, completa todos los campos obligatorios.', 'error')
-        return redirect('/crear_cliente')
-
-    try:
-        cursor = mysql.connection.cursor()
-        cursor.execute(
-            """
-            INSERT INTO clientes (nombre, correo, telefono)
-            VALUES (%s, %s, %s)
-            """, (nombre, correo, telefono)
-        )
-        mysql.connection.commit()
-        cursor.close()
-
-        flash('Cliente guardado correctamente', 'exito')
-
-    except Exception as e:
-        mysql.connection.rollback()
-        cursor.close()
-        flash(f'Ocurrió un error al guardar: {str(e)}', 'error')
-
-    return redirect('/crear_cliente')
-
-@app.route('/eliminar_cliente/<int:id>')
-def eliminar_cliente(id):
-    cursor = None
-    try:
-        cursor = mysql.connection.cursor()
-        cursor.execute("DELETE FROM clientes WHERE id = %s", (id,))
-        mysql.connection.commit()
-        
-        flash('Cliente eliminado correctamente', 'exito')
-    except Exception as e:
-        mysql.connection.rollback()
-        flash(f'Error al eliminar el cliente: {str(e)}', 'error')
-    finally:
-        if cursor:
-            cursor.close()
-
-    return redirect('/crear_cliente')
-
-@app.route("/cambiarImagenProducto/<int:id>")
-def cambiar_imagen_producto(id):
-
-    cursor = mysql.connection.cursor()
-    cursor.execute(
-        "SELECT id, nombre, imagen FROM productos WHERE id=%s",
-        (id,)
-    )
-
-    producto = cursor.fetchone()
-    cursor.close()
-
-    return render_template(
-        "admin/cambiarImagenProducto.html",
-        producto=producto
-    )
-
-@app.route("/actualizarImagenProducto/<int:id>", methods=["POST"])
-def actualizar_imagen_producto(id):
-
-    try:
-
-        imagen = request.files.get("imagen")
-
-        if not imagen or imagen.filename == "":
-            flash("Debe seleccionar una imagen", "error")
-            return redirect(f"/cambiarImagenProducto/{id}")
-
-        cursor = mysql.connection.cursor()
-
-        cursor.execute(
-            "SELECT imagen FROM productos WHERE id=%s",
-            (id,)
-        )
-
-        producto = cursor.fetchone()
-
-        imagen_anterior = producto[0]
-
-        nombre_imagen = secure_filename(imagen.filename)
-
-        ruta = os.path.join(
-            app.root_path,
-            "static",
-            "img",
-            "productos"
-        )
-
-        # eliminar imagen anterior
-        if imagen_anterior != "default.png":
-
-            archivo_anterior = os.path.join(
-                ruta,
-                imagen_anterior
-            )
-
-            if os.path.exists(archivo_anterior):
-                os.remove(archivo_anterior)
-
-        # guardar nueva imagen
-        imagen.save(
-            os.path.join(ruta, nombre_imagen)
-        )
-
-        cursor.execute(
-            "UPDATE productos SET imagen=%s WHERE id=%s",
-            (nombre_imagen, id)
-        )
-
-        mysql.connection.commit()
-
-        flash("Imagen actualizada correctamente", "success")
-
-    except Exception as e:
-        flash(f"Error: {e}", "error")
-
-    finally:
-        cursor.close()
-
-    return redirect("/listarProducto")
-
-# CARRITO DE COMPRAS
+# CATÁLOGO Y CARRITO
 
 @app.route("/catalogo")
 def listaCatalogo():
+    if "id" in session:
+        actualizar_contador_carrito(session["id"])
 
-    cursor = mysql.connection.cursor()
+    # Capturar el término de búsqueda de la URL (ej. ?busqueda=piercing)
+    busqueda = request.args.get('busqueda', '', type=str)
 
-    # Total de registros
-    cursor.execute("SELECT COUNT(*) FROM productos")
-    total_registros = cursor.fetchone()[0]
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    # Productos de la página actual
-    cursor.execute("""
-        SELECT * FROM productos""")
+    if busqueda:
+        # Si hay algo escrito en el buscador, filtramos los productos
+        query = "SELECT * FROM productos WHERE nombre LIKE %s OR tipo LIKE %s OR material LIKE %s OR descripcion LIKE %s"
+        param_busqueda = f"%{busqueda}%"
+        cursor.execute(query, (param_busqueda, param_busqueda, param_busqueda, param_busqueda))
+    else:
+        # Si está vacío, mostramos todos los productos con normalidad
+        cursor.execute("SELECT * FROM productos")
 
     productos = cursor.fetchall()
-
     cursor.close()
 
-    #total_paginas = (total_registros + registros_por_pagina - 1) // registros_por_pagina
-
-    return render_template(
-        'cliente/catalogo.html',
-        productos=productos
-     #   pagina=pagina,
-      #  total_paginas=total_paginas
-    )
+    return render_template('cliente/catalogo.html', productos=productos, busqueda=busqueda)
 
 @app.route("/agregarCarrito/<int:id_producto>", methods=["POST"])
 def agregar_carrito(id_producto):
-
-    #if "id" not in session:
-       # return redirect("/login")
+    if "id" not in session:
+        return redirect("/login")
 
     id_usuario = session["id"]
-
     cursor = mysql.connection.cursor()
 
-    # Verificar si ya existe
-
     cursor.execute("""
-        SELECT id, cantidad
-        FROM carrito
-        WHERE id_usuario=%s
-        AND id_producto=%s
+        SELECT id, cantidad FROM carrito
+        WHERE id_usuario=%s AND id_producto=%s
     """, (id_usuario, id_producto))
-
     existe = cursor.fetchone()
 
     if existe:
-
         cursor.execute("""
-            UPDATE carrito
-            SET cantidad = cantidad + 1
-            WHERE id_usuario=%s
-            AND id_producto=%s
+            UPDATE carrito SET cantidad = cantidad + 1
+            WHERE id_usuario=%s AND id_producto=%s
         """, (id_usuario, id_producto))
-
     else:
-
         cursor.execute("""
-            INSERT INTO carrito(
-                id_usuario,
-                id_producto,
-                cantidad
-            )
-            VALUES(%s,%s,1)
+            INSERT INTO carrito(id_usuario, id_producto, cantidad)
+            VALUES(%s, %s, 1)
         """, (id_usuario, id_producto))
 
     mysql.connection.commit()
     cursor.close()
 
+    actualizar_contador_carrito(id_usuario)
     flash("Producto agregado al carrito", "success")
-
-    return redirect(request.referrer)
-
-@app.route("/carrito")
-def carrito():
-
-    if "user_id" not in session:
-        print("❌ Alerta: No hay 'user_id' en la sesión. Redirigiendo al login...")
+    return redirect(request.referrer or "/catalogo")
+@app.route("/actualizar_cantidad/<int:id_carrito>/<string:accion>")
+def actualizar_cantidad(id_carrito, accion):
+    if "id" not in session:
         return redirect("/login")
-    # Usamos la misma clave con la que guardaste el login ('user_id')
-    id_usuario = session["user_id"]
 
     cursor = mysql.connection.cursor()
 
+    if accion == "sumar":
+        cursor.execute("UPDATE carrito SET cantidad = cantidad + 1 WHERE id = %s", (id_carrito,))
+    elif accion == "restar":
+        cursor.execute("SELECT cantidad FROM carrito WHERE id = %s", (id_carrito,))
+        res = cursor.fetchone()
+        if res and res[0] > 1:
+            cursor.execute("UPDATE carrito SET cantidad = cantidad - 1 WHERE id = %s", (id_carrito,))
+        else:
+            # Si la cantidad es 1 y presiona '-', eliminamos el ítem
+            cursor.execute("DELETE FROM carrito WHERE id = %s", (id_carrito,))
+
+    mysql.connection.commit()
+    cursor.close()
+
+    actualizar_contador_carrito(session["id"])
+    return redirect("/carrito")
+
+@app.route("/carrito")
+def carrito():
+    if "id" not in session:
+        return redirect("/login")
+
+    id_usuario = session["id"]
+    actualizar_contador_carrito(id_usuario)
+
+    cursor = mysql.connection.cursor()
     cursor.execute("""
-        SELECT
-            c.id,
-            p.id,
-            p.nombre,
-            p.precio,
-            c.cantidad,
-            (p.precio * c.cantidad) subtotal,
-            p.imagen
-
+        SELECT c.id, p.id, p.nombre, p.precio, c.cantidad, (p.precio * c.cantidad) subtotal, p.imagen, p.material
         FROM carrito c
-
-        INNER JOIN productos p
-            ON c.id_producto=p.id
-
+        INNER JOIN productos p ON c.id_producto=p.id
         WHERE c.id_usuario=%s
     """, (id_usuario,))
-
     productos = cursor.fetchall()
-
     total = sum(float(item[5]) for item in productos)
-
     cursor.close()
 
     return render_template(
@@ -454,109 +445,19 @@ def carrito():
         productos=productos,
         total=total
     )
+
 @app.route("/eliminarDelCarrito/<int:id_carrito>")
 def eliminar_del_carrito(id_carrito):
-
     cursor = mysql.connection.cursor()
-
-    cursor.execute("""
-        DELETE FROM carrito
-        WHERE id=%s
-    """, (id_carrito,))
-
+    cursor.execute("DELETE FROM carrito WHERE id=%s", (id_carrito,))
     mysql.connection.commit()
-
     cursor.close()
+
+    if "id" in session:
+        actualizar_contador_carrito(session["id"])
 
     flash("Producto eliminado", "success")
-
     return redirect("/carrito")
 
-@app.route("/finalizarCompra")
-def finalizar_compra():
-
-    id_usuario = session["id"]
-
-    cursor = mysql.connection.cursor()
-
-    cursor.execute("""
-        SELECT
-            p.id,
-            p.precio,
-            c.cantidad
-
-        FROM carrito c
-
-        INNER JOIN productos p
-            ON p.id=c.id_producto
-
-        WHERE c.id_usuario=%s
-    """, (id_usuario,))
-
-    carrito = cursor.fetchall()
-
-    if not carrito:
-        flash("El carrito está vacío", "error")
-        return redirect("/carrito")
-
-    total = sum(item[1] * item[2] for item in carrito)
-
-    cursor.execute("""
-        INSERT INTO pedidos(
-            id_usuariofK,
-            total,
-            estado
-        )
-        VALUES(%s,%s,'pendiente')
-    """, (id_usuario, total))
-
-    id_pedido = cursor.lastrowid
-
-    for producto in carrito:
-
-        id_producto = producto[0]
-        precio = producto[1]
-        cantidad = producto[2]
-
-        subtotal = precio * cantidad
-
-        cursor.execute("""
-            INSERT INTO detalle_pedido(
-                id_pedido,
-                id_producto,
-                cantidad,
-                precio_unitario,
-                subtotal
-            )
-            VALUES(%s,%s,%s,%s,%s)
-        """, (
-            id_pedido,
-            id_producto,
-            cantidad,
-            precio,
-            subtotal
-        ))
-
-        cursor.execute("""
-            UPDATE productos
-            SET stock=stock-%s
-            WHERE id=%s
-        """, (
-            cantidad,
-            id_producto
-        ))
-
-    cursor.execute("""
-        DELETE FROM carrito
-        WHERE id_usuario=%s
-    """, (id_usuario,))
-
-    mysql.connection.commit()
-
-    cursor.close()
-
-    flash("Pedido generado correctamente", "success")
-
-    return redirect("/")
 if __name__ == '__main__':
     app.run(debug=True)
