@@ -91,52 +91,64 @@
         </div>
     </section>
 
-    <section id="metrics" class="about-section">
-        <div class="section-title">
-            <h2>NOSOTROS</h2>
-            <p>Sabías que contamos con:</p>
-        </div>
-        <div class="mini-cards">
-            <div class="m-card">
-                <div class="m-icon"><i class='bx bx-award'></i></div>
-                <div class="m-info">
-                    <h3>+<span class="count-number" data-target="11">0</span> Años</h3>
-                    <p>De Experiencia</p>
-                </div>
+<section id="metrics" class="about-section">
+    <div class="section-title">
+        <h2>NOSOTROS</h2>
+        <p>Sabías que contamos con:</p>
+    </div>
+    
+    <div class="mini-cards">
+        <!-- Tarjeta de Experiencia -->
+        <div class="m-card">
+            <div class="m-icon">
+                <i class='bx bx-award'></i>
             </div>
-            <div class="m-card">
-                <div class="m-icon blue"><i class='bx bx-map-pin'></i></div>
-                <div class="m-info">
-                    <h3><span class="count-number" data-target="3">0</span> Sedes</h3>
-                    <p>Diferentes</p>
-                </div>
-            </div>
-            <div class="m-card schedule-card">
-                <div class="m-icon orange"><i class='bx bx-time'></i></div>
-                <div class="m-info-table">
-                    <h3>Horarios de Atención</h3>
-                    <table class="schedule-table">
-                        <thead>
-                            <tr>
-                                <th>Días</th>
-                                <th>Horario</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Lunes a Sábado</td>
-                                <td>9:00 AM - 6:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Domingos</td>
-                                <td>Cerrado</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="m-info">
+                <h3>+<span class="count-number" data-target="11">15</span> Años</h3>
+                <p>De Experiencia</p>
             </div>
         </div>
-    </section>
+
+        <!-- Tarjeta de Sedes -->
+        <div class="m-card blue">
+            <div class="m-icon">
+                <i class='bx bx-map-pin'></i>
+            </div>
+            <div class="m-info">
+                <h3><span class="count-number" data-target="3">2</span> Sedes</h3>
+                <p>Diferentes</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Horarios -->
+        <div class="m-card schedule-card">
+            <div class="m-icon orange">
+                <i class='bx bx-time-five'></i>
+            </div>
+            <div class="m-info-table">
+                <h3>Horarios de Atención</h3>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Días</th>
+                            <th>Horario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lunes a Sábado</td>
+                            <td><span class="time-badge">9:00 AM - 6:00 PM</span></td>
+                        </tr>
+                        <tr>
+                            <td>Domingos</td>
+                            <td><span class="time-badge closed">Cerrado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
     
     <section id="about" class="about-section">
         <div class="about-card">
@@ -144,291 +156,106 @@
             <p>En <strong>Fashion Piercing The Monkey's</strong> nos dedicamos a la curaduría y distribución de joyería fina y accesorios para fumar, diseñados para resaltar tu estilo único.</p>
         </div>
     </section>
-
+    
     <section id="products" class="products-section">
         <div class="section-title">
             <h2>Colección Destacada</h2>
             <p>Nuestra selección de productos más populares.</p>
         </div>
-
+    
         <div class="carousel-container">
             <div class="carousel-track" id="carouselTrack">
                 
+                <!-- Grupo Principal de Productos desde la Base de Datos -->
                 <div class="carousel-group">
-                    
+                    {% for producto in productos %}
                     <div class="product-card">
-                        <div class="badge">Joyería</div>
+                        <div class="badge">{{ producto.tipo }}</div>
                         <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/nostril-colores.png" alt="Nostril Basica">
+                            <img src="{{ url_for('static', filename='img/productos/' ~ producto.imagen) }}" alt="{{ producto.nombre }}">
                         </div>
                         <div class="product-details">
-                            <h3>Nostril Basica</h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Piercing sutil y moderno con circon en la punta de acero quirúrgico.</p>
+                            <h3>{{ producto.nombre }}</h3>
+                            <p class="mat">Material: {{ producto.material }}</p>
+                            <p class="desc">{{ producto.descripcion if producto.descripcion else 'Piercing sutil y moderno de alta calidad.' }}</p>
                             <div class="price-row">
-                                <span class="price">$2.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                                <span class="price">${{ producto.precio }}</span>
+                                <form action="/agregarCarrito/{{ producto.id }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn-add" title="Añadir">
+                                        <i class='bx bx-plus'></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="product-card">
-                        <div class="badge">Piercing</div>
-                        <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/nostril-circon.png" alt="Nostril Con Circon">
-                        </div>
-                        <div class="product-details">
-                            <h3>Nostril Con Circon</h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Piercing sutil y moderno con circon mejor elaborado en la punta de acero quirúrgico.</p>
-                            <div class="price-row">
-                                <span class="price">$3.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="badge">Joyería</div>
-                        <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/nostril-aro.png" alt="Aro De Nostril">
-                        </div>
-                        <div class="product-details">
-                            <h3>Aro De Nostril </h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Elegante piercing con circones en los bordes elaborado con acero quirúrgico, brillante ideal para ocasiones especiales.</p>
-                            <div class="price-row">
-                                <span class="price">$15.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card">
-                        <div class="badge">Piercing</div>
-                        <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/ombligo-diseño.png" alt="Ombligo Con Diseño">
-                        </div>
-                        <div class="product-details">
-                            <h3>Ombligo Con Diseño</h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Piercing del ombligo con sutil y moderno diseños con circon rosado de acero quirúrgico.</p>
-                            <div class="price-row">
-                                <span class="price">$15.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                            </div>
-                        </div>
-                    </div>
-
+                    {% else %}
+                    <p style="color: rgba(255,255,255,0.6); grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        No hay productos destacados disponibles en este momento.
+                    </p>
+                    {% endfor %}
                 </div>
-
+    
+                <!-- Grupo Duplicado (Opcional, utilizado comúnmente para lograr el efecto de desplazamiento infinito continuo en carruseles) -->
                 <div class="carousel-group" aria-hidden="true">
-                    
+                    {% for producto in productos %}
                     <div class="product-card">
-                        <div class="badge">Joyería</div>
+                        <div class="badge">{{ producto.tipo }}</div>
                         <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/nostril-colores.png" alt="Nostril Basica">
+                            <img src="{{ url_for('static', filename='img/productos/' ~ producto.imagen) }}" alt="{{ producto.nombre }}">
                         </div>
                         <div class="product-details">
-                            <h3>Nostril Basica</h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Piercing sutil y moderno con circon en la punta de acero quirúrgico.</p>
+                            <h3>{{ producto.nombre }}</h3>
+                            <p class="mat">Material: {{ producto.material }}</p>
+                            <p class="desc">{{ producto.descripcion if producto.descripcion else 'Piercing sutil y moderno de alta calidad.' }}</p>
                             <div class="price-row">
-                                <span class="price">$2.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                                <span class="price">${{ producto.precio }}</span>
+                                <form action="/agregarCarrito/{{ producto.id }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn-add" title="Añadir">
+                                        <i class='bx bx-plus'></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="product-card">
-                        <div class="badge">Piercing</div>
-                        <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/nostril-circon.png" alt="Nostril Con Circon">
-                        </div>
-                        <div class="product-details">
-                            <h3>Nostril Con Circon</h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Piercing sutil y moderno con circon mejor elaborado en la punta de acero quirúrgico.</p>
-                            <div class="price-row">
-                                <span class="price">$3.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="badge">Joyería</div>
-                        <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/nostril-aro.png" alt="Aro De Nostril">
-                        </div>
-                        <div class="product-details">
-                            <h3>Aro De Nostril </h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Elegante piercing con circones en los bordes elaborado con acero quirúrgico, brillante ideal para ocasiones especiales.</p>
-                            <div class="price-row">
-                                <span class="price">$15.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card">
-                        <div class="badge">Piercing</div>
-                        <div class="product-img-placeholder">
-                            <img src="../static/img/porductos/ombligo-diseño.png" alt="Ombligo Con Diseño">
-                        </div>
-                        <div class="product-details">
-                            <h3>Ombligo Con Diseño</h3>
-                            <p class="mat">Material: Metálica</p>
-                            <p class="desc">Piercing del ombligo con sutil y moderno diseños con circon rosado de acero quirúrgico.</p>
-                            <div class="price-row">
-                                <span class="price">$15.000</span>
-                                <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                            </div>
-                        </div>
-                    </div>
-
+                    {% endfor %}
                 </div>
-
+    
             </div>
         </div>
     </section>
 
-    <section id="all-products" class="products-section">
+<section id="all-products" class="products-section">
         <div class="section-title">
             <h2>Catálogo Completo</h2>
             <p>Descubre toda nuestra línea de piercings, joyería y accesorios.</p>
         </div>
 
         <div class="products-grid">
-            
+            {% for producto in productos %}
             <div class="product-card">
-                <div class="badge">Joyería</div>
+                <div class="badge">{{ producto.tipo }}</div>
                 <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/nostril-aro.png" alt="Aro De Nostril">
+                    <img src="{{ url_for('static', filename='img/productos/' ~ producto.imagen) }}" alt="{{ producto.nombre }}">
                 </div>
                 <div class="product-details">
-                    <h3>Aro De Nostril </h3>
-                    <p class="mat">Material: Metálica</p>
-                    <p class="desc">Elegante piercing con circones en los bordes elaborado con acero quirúrgico, brillante ideal para ocasiones especiales.</p>
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="mat">Material: {{ producto.material }}</p>
+                    <p class="desc">{{ producto.descripcion if producto.descripcion else 'Producto de alta calidad disponible en nuestra tienda.' }}</p>
                     <div class="price-row">
-                        <span class="price">$15.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
+                        <span class="price">${{ producto.precio }}</span>
+                        <form action="/agregarCarrito/{{ producto.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn-add" title="Añadir">
+                                <i class='bx bx-plus'></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <div class="product-card">
-                <div class="badge">Joyería</div>
-                <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/labre-circon.png" alt="Labre Con Circones">
-                </div>
-                <div class="product-details">
-                    <h3>Labre Con Circones</h3>
-                    <p class="mat">Material: Metálica</p>
-                    <p class="desc">Barra sutil y moderno con circon en la punta de acero quirúrgico.</p>
-                    <div class="price-row">
-                        <span class="price">$10.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="badge">Joyería</div>
-                <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/nostril-colores.png" alt="Nostril Basica">
-                </div>
-                <div class="product-details">
-                    <h3>Nostril Basica</h3>
-                    <p class="mat">Material: Metálica</p>
-                    <p class="desc">Piercing sutil y moderno con circon en la punta de acero quirúrgico.</p>
-                    <div class="price-row">
-                        <span class="price">$2.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="badge">Piercing</div>
-                <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/nostril-circon.png" alt="Nostril Con Circon">
-                </div>
-                <div class="product-details">
-                    <h3>Nostril Con Circon</h3>
-                    <p class="mat">Material: Metálica</p>
-                    <p class="desc">Piercing sutil y moderno con circon mejor elaborado en la punta de acero quirúrgico.</p>
-                    <div class="price-row">
-                        <span class="price">$3.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="badge">Piercing</div>
-                <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/ombligo-diseño.png" alt="Ombligo Con Diseño">
-                </div>
-                <div class="product-details">
-                    <h3>Ombligo Con Diseño</h3>
-                    <p class="mat">Material: Metálica</p>
-                    <p class="desc">Piercing del ombligo con sutil y moderno diseños con circon rosado de acero quirúrgico.</p>
-                    <div class="price-row">
-                        <span class="price">$15.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="badge">Smoke</div>
-                <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/ocb.png" alt="OCB Carburacion Lenta">
-                </div>
-                <div class="product-details">
-                    <h3>OCB Carburacion Lenta</h3>
-                    <p class="mat">Material: Papper</p>
-                    <p class="desc">Papper OCB de carburacion lents con acabado de alta calidad fabricados con materiales 100% naturales (como lino o cáñamo) y usan pegamento vegetal (goma arábiga).</p>
-                    <div class="price-row">
-                        <span class="price">$4.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                    </div>
-                </div>
-            </div>
-        
-            <div class="product-card">
-                <div class="badge">Smoke</div>
-                <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/smoking.png" alt="Smoking Carburacion Lenta">
-                </div>
-                <div class="product-details">
-                    <h3>Smoking Carburacion Lenta</h3>
-                    <p class="mat">Material: Papper</p>
-                    <p class="desc">Papper Smoking de carburacion lents con acabado de alta calidad fabricados con materiales 100% naturales.</p>
-                    <div class="price-row">
-                        <span class="price">$4.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                    </div>
-                </div>
-            </div>
-        
-            <div class="product-card">
-                <div class="badge">Smoke</div>
-                <div class="product-img-placeholder">
-                    <img src="../static/img/porductos/blunt-hig-hemp.png" alt="Blunt Hig Hemp">
-                </div>
-                <div class="product-details">
-                    <h3>Blunt Hig Hemp </h3>
-                    <p class="mat">Material: Blunt</p>
-                    <p class="desc">Papper Blunt Hig Hemp de carburacion lenta con relajantes naturales como el +CBD fabricados con materiales 100% naturales.</p>
-                    <div class="price-row">
-                        <span class="price">$6.000</span>
-                        <a href="#" class="btn-add"><i class='bx bx-plus'></i></a>
-                    </div>
-                </div>
-            </div>
+            {% else %}
+            <p style="color: rgba(255,255,255,0.6); grid-column: 1 / -1; text-align: center; padding: 40px;">
+                No hay productos disponibles en este momento.
+            </p>
+            {% endfor %}
         </div>
     </section>
 

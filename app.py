@@ -57,6 +57,22 @@ def admin():
 def login():
     return render_template('cliente/login.html')
 
+@app.route('/ventas')
+def ventas():
+    return render_template('admin/ventas.html')
+
+@app.route('/perfil')
+def perfil():
+    return render_template('admin/perfil.html')
+
+@app.route('/administradores')
+def administradores():
+    return render_template('admin/administradores.html')
+
+@app.route('/reportes_ventas')
+def reportes():
+    return render_template('admin/reportes_ventas.html')
+
 @app.route('/crear')
 def crear():
     # 1. Obtener la página actual desde la URL (por defecto la página 1)
@@ -366,7 +382,7 @@ def listaCatalogo():
 
     return render_template('cliente/catalogo.html', productos=productos, busqueda=busqueda)
 
-@app.route("/agregarCarrito/<int:id_producto>", methods=["POST"])
+@app.route("/agregarCarrito/<int:id_producto>", methods=["GET", "POST"])
 def agregar_carrito(id_producto):
     if "id" not in session:
         return redirect("/login")
@@ -397,6 +413,7 @@ def agregar_carrito(id_producto):
     actualizar_contador_carrito(id_usuario)
     flash("Producto agregado al carrito", "success")
     return redirect(request.referrer or "/catalogo")
+
 @app.route("/actualizar_cantidad/<int:id_carrito>/<string:accion>")
 def actualizar_cantidad(id_carrito, accion):
     if "id" not in session:

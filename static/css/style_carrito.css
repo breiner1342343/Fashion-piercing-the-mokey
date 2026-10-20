@@ -2,12 +2,9 @@
     --orange: #ffae00;
     --black: #000220;
     --blue: #37e8ff;
-    --white: #ffffff;
-    --dark-bg: #0a0e1a;
+    --white: #fff;
+    --dark: #1a1a2e;
     --card-bg: #16213e;
-    --card-item-bg: rgba(255, 255, 255, 0.04);
-    --hover-bg: rgba(255, 255, 255, 0.08);
-    --red: #ff4d4d;
     --transition: all 0.3s ease;
 }
 
@@ -15,140 +12,166 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
     scroll-behavior: smooth;
 }
 
 body {
-    background: var(--dark-bg);
+    background: var(--black);
     color: var(--white);
-    min-height: 100vh;
     overflow-x: hidden;
 }
 
 a { text-decoration: none; }
 li { list-style: none; }
 
-/* --- HEADER & NAVEGACIÓN --- */
+/* HEADER Y NAVEGACIÓN IGUAL AL INDEX */
 .header {
-    background: #4a340b;
+    background: #ffae0081;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    border-bottom: 1px solid rgba(255, 174, 0, 0.2);
+    box-shadow: 0 2px 15px rgba(0,0,0,0.4);
 }
 
 .nav {
-    max-width: 1300px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 12px 20px;
+    padding: 15px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    position: relative;
+    gap: 15px;
 }
 
 .logo img {
-    height: 48px;
+    height: 40px;
     object-fit: contain;
 }
 
-/* Buscador */
-.search {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    max-width: 300px;
-}
-
-.search input {
-    width: 100%;
-    padding: 8px 16px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.4);
-    color: var(--white);
-    font-size: 0.88rem;
-    transition: var(--transition);
-}
-
-.search input:focus {
-    outline: none;
-    border-color: var(--orange);
-}
-
-.search button {
-    background: transparent;
-    border: 1px solid var(--blue);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    color: var(--blue);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.search button:hover {
-    background: var(--blue);
-    color: var(--black);
-}
-
-/* Nav Links */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 20px;
 }
 
 .nav-links a {
-    color: var(--white);
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
-    font-size: 0.95rem;
     transition: var(--transition);
 }
 
-.nav-links a:hover { 
-    color: var(--orange); 
-}
-
-.cart-icon i {
-    font-size: 1.5rem;
-    color: var(--blue);
-}
-
-.cart-badge {
-    position: absolute;
-    top: -8px;
-    right: -10px;
-    background: var(--orange);
-    color: var(--black);
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 0.72rem;
-    font-weight: bold;
-}
+.nav-links a:hover { color: var(--orange); }
+.cart-icon i { font-size: 24px; color: var(--blue); }
 
 .user-greeting {
     color: var(--orange);
-    font-size: 0.92rem;
+    font-weight: 600;
+    font-size: 0.95rem;
 }
 
-.btn-auth {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 6px 14px;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.2);
+/* ===================================================
+   ESTILOS DE LA BARRA DE BÚSQUEDA Y SUGERENCIAS
+   =================================================== */
+
+.search-form {
+    display: flex;
+    align-items: center;
 }
 
-.btn-auth:hover {
-    background: var(--orange);
-    color: var(--black) !important;
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Campo de entrada (Input) */
+.search-input-wrapper input {
+    background-color: var(--transition)!important;
+    border: 2px solid #ffffff !important;
+    border-radius: 25px !important;
+    padding: 8px 45px 8px 18px !important;
+    color: #ffffff !important;
+    outline: none !important;
+    font-size: 14px !important;
+    width: 340px !important;
+    transition: all 0.3s ease !important;
+}
+
+.search-input-wrapper input::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+/* Botón Lupa */
+.search-btn {
+    position: absolute;
+    right: 6px;
+    background: #ca8a04;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #0f172a;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.search-btn:hover {
+    background: #eab308;
+    transform: scale(1.05);
+}
+
+/* Contenedor Flotante de Sugerencias */
+.suggestions-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background-color: #ffae0081;
+    border: 2px solid #ca8a04;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* Título de Sugerencias */
+.suggestions-title {
+    padding: 10px 15px 4px 15px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+/* Cada opción del menú */
+.suggestion-item {
+    padding: 10px 15px;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #ca8a04;
+    color: #0f172a;
+    font-weight: 600;
 }
 
 /* --- SECCIÓN PRINCIPAL DEL CARRITO --- */

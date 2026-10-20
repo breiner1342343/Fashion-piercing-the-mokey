@@ -87,32 +87,23 @@
             {% endif %}
         </div>
     </header>
-
-    <!-- Catálogo de Productos -->
-    <div class="products-section">
+<section id="all-products" class="products-section">
         <div class="section-title">
-            <h2>Catálogo de Productos</h2>
-            <p>Explora nuestra colección disponible</p>
+            <h2>Catálogo Completo</h2>
+            <p>Descubre toda nuestra línea de piercings, joyería y accesorios.</p>
         </div>
 
         <div class="products-grid">
             {% for producto in productos %}
             <div class="product-card">
-                <!-- Badge de categoría -->
-                <span class="badge">{{ producto.tipo }}</span>
-                
-                <!-- Contenedor de la imagen -->
+                <div class="badge">{{ producto.tipo }}</div>
                 <div class="product-img-placeholder">
                     <img src="{{ url_for('static', filename='img/productos/' ~ producto.imagen) }}" alt="{{ producto.nombre }}">
                 </div>
-
-                <!-- Detalles del producto -->
                 <div class="product-details">
-                    <h3 class="producto-titulo">{{ producto.nombre }}</h3>
+                    <h3>{{ producto.nombre }}</h3>
                     <p class="mat">Material: {{ producto.material }}</p>
-                    <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 8px;">Disponibles: {{ producto.stock }}</p>
-                    
-                    <!-- Fila de precio y botón de añadir por POST -->
+                    <p class="desc">{{ producto.descripcion if producto.descripcion else 'Producto de alta calidad disponible en nuestra tienda.' }}</p>
                     <div class="price-row">
                         <span class="price">${{ producto.precio }}</span>
                         <form action="/agregarCarrito/{{ producto.id }}" method="POST" style="display:inline;">
@@ -129,8 +120,7 @@
             </p>
             {% endfor %}
         </div>
-    </div>
-
+    </section>
     <!-- Carrito de Compras (Si se accede desde la vista integrada) -->
     {% if productos_carrito is defined %}
     <div class="shopping-cart-container">
@@ -161,7 +151,54 @@
         </div>
     </div>
     {% endif %}
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>Canales de Atención</h2>
+                <p>¿Tienes dudas o deseas hacer un pedido personalizado? Escríbenos directamente o búscanos en nuestras plataformas.</p>
+                
+                <div class="info-links">
+                    <div class="info-item">
+                        <i class='bx bxs-envelope'></i>
+                        <span>contacto@fashionbreiner.com</span>
+                    </div>
+                    <div class="info-item">
+                        <i class='bx bxs-phone'></i>
+                        <span>+57 320 765 5279</span>
+                    </div>
+                </div>
 
+                <div class="social-media">
+                    <h3>Síguenos en Redes</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon facebook"><i class='bx bxl-facebook'></i></a>
+                        <a href="#" class="social-icon instagram"><i class='bx bxl-instagram'></i></a>
+                        <a href="#" class="social-icon tiktok"><i class='bx bxl-tiktok'></i></a>
+                        <a href="#" class="social-icon whatsapp"><i class='bx bxl-whatsapp'></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-container">
+                <h3>Envíanos un mensaje</h3>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nombre Completo</label>
+                        <input type="text" id="name" required placeholder="Ej. Ana Martínez">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" required placeholder="name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensaje / Consulta</label>
+                        <textarea id="message" rows="4" required placeholder="Cuéntanos qué producto te interesa..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
     <!-- SCRIPT DE JAVASCRIPT PARA AUTOCOMPLETADO Y SUGERENCIAS -->
     <script src="../static/js/catalogo.js"></script>
 </body>

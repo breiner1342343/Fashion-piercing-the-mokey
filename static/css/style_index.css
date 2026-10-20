@@ -241,50 +241,152 @@ li { list-style: none; }
 }
 
 /*CARDS DE ESTADÍSTICAS */
-.mini-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
+/* Contenedor general de la sección */
+.about-section {
+    padding: 60px 20px;
+    background: #0f172a; /* Fondo oscuro moderno */
+    color: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
 }
 
+.about-section .section-title h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.about-section .section-title p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    margin-bottom: 40px;
+}
+
+/* Cuadrícula de tarjetas */
+.mini-cards {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 24px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilo base de cada tarjeta */
 .m-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 174, 0, 0.2);
-    padding: 30px 25px;
-    border-radius: 15px;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 24px;
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                border-color 0.3s ease, 
-                box-shadow 0.4s ease;
+    flex: 1 1 280px;
+    max-width: 360px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
 }
 
 .m-card:hover {
-    transform: scale(1.05);
-    border-color: var(--orange);
-    box-shadow: 0 0 25px rgba(255, 174, 0, 0.45), 
-                0 10px 30px rgba(0, 0, 0, 0.4);
+    transform: translateY(-5px);
+    border-color: rgba(255, 174, 0, 0.4);
+    box-shadow: 0 15px 30px -5px rgba(255, 174, 0, 0.1);
 }
 
-.m-card.schedule-card {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-}
-
+/* Iconos estilizados */
 .m-icon {
-    font-size: 32px;
     width: 60px;
     height: 60px;
-    background: rgba(255, 174, 0, 0.1);
-    color: var(--orange);
+    background: var(--card-bg);
+    color: #ffae00;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.8rem;
     flex-shrink: 0;
+}
+
+.m-icon.blue {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.m-icon.orange {
+    background: rgba(249, 115, 22, 0.1);
+    color: #f97316;
+}
+
+/* Información interna */
+.m-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 4px;
+}
+
+.m-info p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Tarjeta especial de horarios */
+.schedule-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.m-info-table {
+    width: 100%;
+}
+
+.m-info-table h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color:var(--orange);
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+/* Tabla de horarios estilizada */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.schedule-table th {
+    text-align: left;
+    color: #94a3b8;
+    font-weight: 600;
+    padding-bottom: 6px;
+}
+
+.schedule-table td {
+    padding: 6px 0;
+    color: #e2e8f0;
+}
+
+/* Insignias de estado */
+.time-badge {
+    background: var(--card-bg);
+    color: var(--blue);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.time-badge.closed {
+    background: var(--card-bg);
+    color: var(--orange);
 }
 .m-icon.blue { background: rgba(55, 232, 255, 0.1); color: var(--blue); }
 .m-icon.orange { background: rgba(255, 174, 0, 0.1); color: var(--orange); }

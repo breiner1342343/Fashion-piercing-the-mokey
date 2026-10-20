@@ -264,20 +264,119 @@ li { list-style: none; }
 }
 .btn-add:hover { background: var(--white); transform: scale(1.1); }
 
-/* MEDIA QUERIES (RESPONSIVO) */
+/* SECCIÓN SOBRE NOSOTROS */
+.about-card {
+    background: linear-gradient(135deg, var(--card-bg), var(--dark));
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.about-card h2 { color: var(--orange); margin-bottom: 15px; }
+.about-card p { max-width: 800px; margin: 0 auto; line-height: 1.8; color: rgba(255,255,255,0.8); }
+
+/* CONTACTO Y FORMULARIO */
+.contact-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.contact-info h2 { color: var(--orange); margin-bottom: 15px; }
+.contact-info p { color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 25px; }
+.info-links { display: flex; flex-direction: column; gap: 15px; }
+.info-item { display: flex; align-items: center; gap: 12px; }
+.info-item i { color: var(--blue); font-size: 20px; }
+
+.social-media { margin-top: 35px; }
+.social-media h3 { font-size: 1.1rem; margin-bottom: 15px; }
+.social-icons { display: flex; gap: 12px; }
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: var(--transition);
+}
+.social-icon:hover { transform: translateY(-3px); color: var(--black); }
+.social-icon.facebook:hover { background: #1877f2; }
+.social-icon.instagram:hover { background: #e1306c; }
+.social-icon.tiktok:hover { background: #000000; border: 1px solid #fe2c55; }
+.social-icon.whatsapp:hover { background: #25d366; }
+
+.contact-form-container h3 { margin-bottom: 20px; color: var(--blue); }
+.contact-form { display: flex; flex-direction: column; gap: 15px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+
+.form-group input, .form-group textarea {
+    padding: 12px;
+    background: rgba(0, 2, 32, 0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: var(--white);
+    transition: var(--transition);
+}
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: rgba(0, 2, 32, 0.7);
+}
+
+.btn-submit {
+    background: var(--blue);
+    color: var(--black);
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-submit:hover { background: var(--orange); transform: translateY(-2px); }
+
+.main-footer {
+    text-align: center;
+    padding: 25px;
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.4);
+}
+
 @media (max-width: 990px) {
     .nav { flex-direction: column; gap: 15px; padding: 15px; }
     .search { max-width: 100%; }
-}
+} 
 
+/* COMPUTADORAS */
 @media (min-width: 768px) {
-    .nav-links { display: flex; }
-    .mobile-menu { display: none !important; }
-    .mobile-menu-btn { display: none; }
+    .nav-links { 
+        display: flex; 
+    }
+    
+    .mobile-menu { 
+        display: none !important; 
+    }
+    
+    .mobile-menu-btn { 
+        display: none; 
+    }
 }
 
 @media (max-width: 767px) {
     .nav-links { display: none; }
+    
     .mobile-menu-btn {
         display: flex;
         flex-direction: column;
@@ -297,6 +396,7 @@ li { list-style: none; }
         transition: 0.3s ease;
         border-radius: 2px;
     }
+
     .mobile-menu-btn.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
     .mobile-menu-btn.active span:nth-child(2) { opacity: 0; }
     .mobile-menu-btn.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
@@ -319,4 +419,7 @@ li { list-style: none; }
         border-bottom: 1px solid rgba(255,255,255,0.05);
     }
     .mobile-menu a:hover { background: rgba(255,174,0,0.1); color: var(--orange); }
+
+    .hero-content h1 { font-size: 1.8rem; }
+    .contact-container { padding: 20px; }
 }

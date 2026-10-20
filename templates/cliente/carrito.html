@@ -10,37 +10,51 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header class="header">
         <nav class="nav">
             <!-- Logo -->
             <div class="logo">
-                <a href="/"><img src="{{ url_for('static', filename='img/logo_fashion.png') }}" alt="Logo Fashion Breiner"></a>
+                <img src="{{ url_for('static', filename='img/logo_fashion.png') }}" alt="Logo Fashion Breiner">
             </div>
 
-            <!-- Buscador -->
-            <div class="search">
-                <input type="text" placeholder="Buscar..." id="searchInput">
-                <button type="button"><i class='bx bx-search'></i></button>  
-            </div>
+            <!-- Buscador con caja de sugerencias -->
+            <form action="/catalogo" method="GET" class="search-form" autocomplete="off">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        name="busqueda" 
+                        placeholder="Buscar..." 
+                        value="{{ busqueda if busqueda else '' }}" 
+                        id="searchInput"
+                    >
+                    <button type="submit" class="search-btn" title="Buscar">
+                        <i class='bx bx-search'></i>
+                    </button>
 
-            <!-- Enlaces de navegación -->
+                    <!-- AQUÍ ESTÁ EL CONTENEDOR DE SUGERENCIAS QUE FALTABA -->
+                    <div id="suggestionsBox" class="suggestions-dropdown" style="display: none;"></div>
+                </div>
+            </form>
+
+            <!-- Enlaces de navegación de escritorio -->
             <ul class="nav-links">
                 <li><a href="/">Inicio</a></li>
                 <li><a href="/about">Nosotros</a></li>
                 <li><a href="/catalogo">Productos</a></li>
-                <li><a href="/contacto">Contacto</a></li>
+                <li><a href="#contact">Contacto</a></li>
                 <li>
-                    <a href="/carrito" class="cart-icon" title="Carrito">
-                        <i class='bx bx-cart' id="icarrito"></i>
+                    <a href="/carrito" class="cart-icon" title="Carrito" style="position: relative;">
+                        <i class='bx bx-cart' id="icarrito" style="font-size: 1.5rem;"></i>
                         {% if session.get('total_items') and session.get('total_items') > 0 %}
-                            <span class="cart-badge">{{ session['total_items'] }}</span>
+                            <span class="cart-badge" style="position: absolute; top: -5px; right: -10px; background: var(--orange, #ffae00); color: #000; border-radius: 50%; padding: 2px 6px; font-size: 0.75rem; font-weight: bold;">
+                                {{ session['total_items'] }}
+                            </span>
                         {% endif %}
                     </a>
                 </li>
                 
                 {% if session.get('nombre') %}
-                    <li><span class="user-greeting">Hola, <strong>{{ session['nombre'] }}</strong></span></li>
+                    <li><span class="user-greeting">Hola, {{ session['nombre'] }}</span></li>
                     <li><a href="/cerrar_sesion" class="btn-auth">Cerrar Sesión</a></li>
                 {% else %}
                     <li><a href="/login" class="btn-auth">Iniciar Sesión</a></li>
@@ -55,24 +69,6 @@
                 <span></span>
             </div>
         </nav>
-
-        <!-- Menú desplegable móvil (oculto por CSS) -->
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="/">Inicio</a>
-            <a href="/catalogo">Productos</a>
-            <a href="/about">Nosotros</a>
-            <a href="/contacto">Contacto</a>
-            <a href="/carrito">Carrito</a>
-            
-            {% if session.get('nombre') %}
-                <div class="mobile-user-info">
-                    <span><i class='bx bx-user-circle'></i> Hola, <strong>{{ session['nombre'] }}</strong></span>
-                    <a href="/cerrar_sesion" class="login">Cerrar Sesión</a>
-                </div>
-            {% else %}
-                <a href="/login" class="login">Iniciar Sesión</a>
-            {% endif %}
-        </div>
     </header>
 
     <!-- Contenido Principal -->

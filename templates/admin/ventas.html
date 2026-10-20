@@ -3,28 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Fashion Piercing</title>
+    <title>Registrar Venta - Fashion Piercing</title>
+    
+    <!-- Iconos Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../static/css/style_crear.css">
+    
+    <!-- Hoja de Estilos -->
+    <link rel="stylesheet" href="../static/css/style_ventas2.css">
 </head>
 <body>
 
-    <!-- Control Toggle Menú Móvil -->
+    <!-- Checkbox para colapsar sidebar -->
     <input type="checkbox" id="menu-toggle-check" class="menu-checkbox">
 
-    <!-- Sidebar -->
+    <!-- Sidebar Lateral -->
     <aside class="sidebar" id="sidebar">
         <div class="brand-name">
             <h1>FASHION PIERCING</h1>
         </div>
         <nav class="con-menu">
             <ul>
-                <li><a href="#dashboard-section"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li><a href="#clientes"><i class='bx bxs-user-detail'></i> Clientes</a></li>
-                <li><a href="#Pedidos"><i class='bx bxs-package'></i> Pedidos</a></li>
-                <li><a href="#reportes"><i class='bx bx-bar-chart-alt'></i> Reportes de Ventas</a></li>
+                <li><a href="/admin"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a href="/crear_cliente"><i class='bx bxs-user-detail'></i> Clientes</a></li>
+                <li class="active"><a href="/ventas"><i class='bx bxs-package'></i> Ventas</a></li>
+                <li><a href="/reportes_ventas"><i class='bx bx-bar-chart-alt'></i> Reportes de Ventas</a></li>
                 <li><a href="/crear"><i class='bx bx-add-to-queue'></i> Agregar Producto</a></li>
-                <li><a href="/login"><i class='bx bx-log-in'></i> Cerrar Sesión</a></li>
+                <li><a href="/administradores"><i class='bx bx-user-plus'></i> Administradores</a></li>
+                <li><a href="/"><i class='bx bx-store-alt'></i> Tienda Virtual</a></li>
+                <li><a href="/perfil"><i class='bx bx-user-circle'></i> Perfil</a></li>
+                <li><a href="/cerrar_session"><i class='bx bx-log-out'></i> Cerrar Sesión</a></li>
             </ul>
         </nav>
     </aside>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        
+        <!-- Header Superior -->
+        <header class="header">
+            <div class="header-left">
+                <label for="menu-toggle-check" class="menu-toggle">
+                    <i class='bx bx-menu'></i>
+                </label>
+                <div class="search">
+                    <input type="text" placeholder="Buscar productos o joyas..." id="searchInput">
+                    <button type="button"><i class='bx bx-search'></i></button>  
+                </div>
+                
+                <div class="dropdown">
+                    <input type="checkbox" id="dropdown-toggle" class="dropdown-check">
+                    <label for="dropdown-toggle" class="btn dropdown-btn">
+                        <i class='bx bx-plus'></i> Añadir
+                    </label>
+                    <ul class="dropdown-menu">
+                        <li><a href="/crear"><i class='bx bx-package'></i> Nuevo Producto</a></li>
+                        <li><a href="/crear_cliente"><i class='bx bx-user-plus'></i> Nuevo Cliente</a></li>
+                        <li><a href="/ventas"><i class='bx bx-cart-add'></i> Registrar Venta</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenedor del Formulario y Carrito de Venta -->
+        <div class="ventas-wrapper">
+            
+            <div class="ventas-header">
+                <div>
+                    <h2 class="titulo-seccion">Registrar Nueva Venta</h2>
+                    <p class="subtitulo-seccion">Selecciona cliente, joyas o servicios de perforación para generar la orden.</p>
+                </div>
+                <a href="/reportes_ventas" class="btn-secondary">
+                    <i class='bx bx-bar-chart-alt-2'></i> Ver Historial de Ventas
+                </a>
+            </div>
+
+            <form id="formVenta" action="/ventas" method="POST" class="ventas-grid">
+                
+                <!-- Columna Izquierda: Selección de Cliente y Catálogo -->
+                <div class="ventas-left">
+                    
+                    <!-- Tarjeta: Datos del Cliente -->
+                    <div class="card">
+                        <h3 class="card-title"><i class='bx bx-user'></i> Informacion del Cliente</h3>
+                        <div class="form-row">
+                            <div class="form-group flex-1">
+                                <label for="cliente">Seleccionar Cliente</label>
+                                <select id="cliente" name="cliente_id" required>
+                                    <option value="">-- Seleccionar o Buscar Cliente --</option>
+                                    <option value="1">Kevin - kevin@example.com</option>
+                                    <option value="2">Angie Ordóñez - angie@example.com</option>
+                                    <option value="3">Cliente General / Mostrador</option>
+                                </select>
+                            </div>
+                            <a href="/crear_cliente" class="btn-icon-add" title="Crear Cliente Nuevo">
+                                <i class='bx bx-user-plus'></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta: Selección de Productos/Joyas -->
+                    <div class="card">
+                        <h3 class="card-title"><i class='bx bx-purchase-tag-alt'></i> Agregar Productos a la Venta</h3>
+                        
+                        <div class="catalog-filters">
+                            <button type="button" class="filter-btn active" onclick="filtrarProductos('todos')">Todos</button>
+                            <button type="button" class="filter-btn" onclick="filtrarProductos('titanio')">Titanio ASTM F-136</button>
+                            <button type="button" class="filter-btn" onclick="filtrarProductos('acero')">Acero Quirúrgico</button>
+                            <button type="button" class="filter-btn" onclick="filtrarProductos('servicio')">Perforación</button>
+                        </div>
+
+                        <div class="product-grid" id="productGrid">
+                            <!-- Producto 1 -->
+                            <div class="product-item" data-cat="titanio" onclick="agregarAlCarrito(1, 'Labret Titanio ASTM F-136 8mm', 45000)">
+                                <div class="product-info">
+                                    <span class="product-title">Labret Titanio ASTM F-136 8mm</span>
+                                    <span class="product-category">Titanio Grado Médico</span>
+                                </div>
+                                <span class="product-price">$45.000</span>
+                            </div>
+
+                            <!-- Producto 2 -->
+                            <div class="product-item" data-cat="titanio" onclick="agregarAlCarrito(2, 'Nostril Titanio Rosca Interna', 38000)">
+                                <div class="product-info">
+                                    <span class="product-title">Nostril Titanio Rosca Interna</span>
+                                    <span class="product-category">Titanio Grado Médico</span>
+                                </div>
+                                <span class="product-price">$38.000</span>
+                            </div>
+
+                            <!-- Producto 3 -->
+                            <div class="product-item" data-cat="acero" onclick="agregarAlCarrito(3, 'Argolla Segmento Acero 316L', 25000)">
+                                <div class="product-info">
+                                    <span class="product-title">Argolla Segmento Acero 316L</span>
+                                    <span class="product-category">Acero Quirúrgico</span>
+                                </div>
+                                <span class="product-price">$25.000</span>
+                            </div>
+
+                            <!-- Producto 4 -->
+                            <div class="product-item" data-cat="servicio" onclick="agregarAlCarrito(4, 'Servicio Perforación Helix / Oreja', 35000)">
+                                <div class="product-info">
+                                    <span class="product-title">Servicio Perforación Helix</span>
+                                    <span class="product-category">Procedimiento + Aguja Catéter</span>
+                                </div>
+                                <span class="product-price">$35.000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Columna Derecha: Detalle de Venta y Pago -->
+                <div class="ventas-right">
+                    <div class="card sticky-card">
+                        <h3 class="card-title"><i class='bx bx-cart'></i> Resumen del Pedido</h3>
+
+                        <!-- Tabla del Carrito -->
+                        <div class="cart-table-wrapper">
+                            <table class="cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cant.</th>
+                                        <th>Subtotal</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cartItems">
+                                    <!-- Rellenado dinámicamente con JS -->
+                                    <tr id="emptyCartRow">
+                                        <td colspan="4" class="empty-msg">No has agregado productos a la venta.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Metodo de Pago y Totales -->
+                        <div class="payment-section">
+                            <div class="form-group">
+                                <label for="metodo_pago">Método de Pago</label>
+                                <select id="metodo_pago" name="metodo_pago" required>
+                                    <option value="nequi">Nequi</option>
+                                    <option value="efectivo">Efectivo</option>
+                                    <option value="tarjeta">Tarjeta Débito/Crédito (Bold/Wompi)</option>
+                                    <option value="pse">PSE / Transferencia</option>
+                                </select>
+                            </div>
+
+                            <div class="summary-line">
+                                <span>Subtotal</span>
+                                <span id="subtotalText">$0</span>
+                            </div>
+                            <div class="summary-line highlight">
+                                <span>Total a Pagar</span>
+                                <span id="totalText">$0</span>
+                            </div>
+
+                            <button type="submit" class="btn-submit-sale" id="btnSubmit">
+                                <i class='bx bx-check-circle'></i> Completar Venta
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="../static/js/ventas.js"></script>
+</body>
+</html>

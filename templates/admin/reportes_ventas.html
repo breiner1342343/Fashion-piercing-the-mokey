@@ -4,27 +4,213 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Fashion Piercing</title>
+
+    <!-- Iconos Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../static/css/style_crear.css">
+    
+    <!-- Librería de Gráficos Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="../static/css/style_ventas.css">
 </head>
 <body>
 
-    <!-- Control Toggle Menú Móvil -->
+    <!-- Checkbox para controlar colapso de Sidebar -->
     <input type="checkbox" id="menu-toggle-check" class="menu-checkbox">
 
-    <!-- Sidebar -->
+    <!-- Barra Lateral (Sidebar) -->
     <aside class="sidebar" id="sidebar">
         <div class="brand-name">
             <h1>FASHION PIERCING</h1>
         </div>
         <nav class="con-menu">
             <ul>
-                <li><a href="/admin"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li><a href="/clientes"><i class='bx bxs-user-detail'></i> Clientes</a></li>
-                <li><a href="/pedidos"><i class='bx bxs-package'></i> Pedidos</a></li>
+                <li class="active"><a href="/admin"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a href="/crear_cliente"><i class='bx bxs-user-detail'></i> Clientes</a></li>
+                <li><a href="/ventas"><i class='bx bxs-package'></i> Ventas</a></li>
                 <li><a href="/reportes_ventas"><i class='bx bx-bar-chart-alt'></i> Reportes de Ventas</a></li>
                 <li><a href="/crear"><i class='bx bx-add-to-queue'></i> Agregar Producto</a></li>
-                <li><a href="/login"><i class='bx bx-log-in'></i> Cerrar Sesión</a></li>
+                <li><a href="/administradores"><i class='bx bx-user-plus'></i> Administradores</a></li>
+                <li><a href="/"><i class='bx bx-store-alt'></i> Tienda Virtual</a></li>
+                <li><a href="/perfil"><i class='bx bx-user-circle'></i> Perfil</a></li>
+                <li><a href="/cerrar_session"><i class='bx bx-log-out'></i> Cerrar Sesión</a></li>
             </ul>
         </nav>
     </aside>
+
+    <!-- Contenido Principal -->
+    <main class="main-content" id="main-content">
+        
+        <!-- Header Superior -->
+        <header class="header">
+            <div class="header-left">
+                <label for="menu-toggle-check" class="menu-toggle" id="menu-toggle" title="Toggle Menú">
+                    <i class='bx bx-menu'></i>
+                </label>
+                <div class="search">
+                    <input type="text" placeholder="Buscar perforaciones, clientes, ventas..." id="searchInput">
+                    <button type="button" aria-label="Buscar"><i class='bx bx-search'></i></button>  
+                </div>
+                
+                <!-- Menú Desplegable Añadir -->
+                <div class="dropdown">
+                    <input type="checkbox" id="dropdown-toggle" class="dropdown-check">
+                    <label for="dropdown-toggle" class="btn dropdown-btn">
+                        <i class='bx bx-plus'></i> Añadir
+                    </label>
+                    <ul class="dropdown-menu">
+                        <li><a href="/crear"><i class='bx bx-package'></i> Nuevo Producto</a></li>
+                        <li><a href="/crear_cliente"><i class='bx bx-user-plus'></i> Nuevo Cliente</a></li>
+                        <li><a href="/ventas"><i class='bx bx-cart-add'></i> Registrar Venta</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Área de Dashboard y Analíticas -->
+        <div class="dashboard-wrapper">
+            
+            <!-- Fila Superior: Tarjetas KPI de Métricas clave -->
+            <div class="kpi-row">
+                
+                <!-- Ingresos Totales -->
+                <div class="kpi-card dark-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Ingresos Totales</span>
+                        <div class="kpi-badge icon-circle gold-bg">
+                            <i class='bx bx-dollar'></i>
+                        </div>
+                    </div>
+                    <div class="kpi-body">
+                        <h2 class="kpi-value" id="kpi-ingresos">
+                            ${{ "%.2f"|format(total_ingresos or 18450.00) }}
+                        </h2>
+                        <span class="kpi-subtext positive"><i class='bx bx-up-arrow-alt'></i> +14.2% vs mes anterior</span>
+                    </div>
+                </div>
+
+                <!-- Ventas Totales -->
+                <div class="kpi-card white-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Perforaciones Realizadas</span>
+                        <div class="kpi-badge icon-circle orange-bg">
+                            <i class='bx bx-git-commit'></i>
+                        </div>
+                    </div>
+                    <div class="kpi-body">
+                        <h2 class="kpi-value" id="kpi-ventas">
+                            {{ total_ventas or 2434 }}
+                        </h2>
+                        <span class="kpi-subtext text-muted">Joyas de Titanio y Acero Quirrúrgico</span>
+                    </div>
+                </div>
+
+                <!-- Clientes Atendidos -->
+                <div class="kpi-card white-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Clientes Frecuentes</span>
+                        <div class="kpi-badge icon-circle cyan-bg">
+                            <i class='bx bx-user-check'></i>
+                        </div>
+                    </div>
+                    <div class="kpi-body">
+                        <h2 class="kpi-value">1,259</h2>
+                        <span class="kpi-subtext positive"><i class='bx bx-trending-up'></i> 88% Tasa de Retención</span>
+                    </div>
+                </div>
+
+                <!-- Calificación de Servicio -->
+                <div class="kpi-card white-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">Satisfacción Studio</span>
+                        <div class="kpi-badge icon-circle gold-bg">
+                            <i class='bx bxs-star'></i>
+                        </div>
+                    </div>
+                    <div class="kpi-body">
+                        <h2 class="kpi-value">4.9 / 5</h2>
+                        <span class="kpi-subtext text-muted">Basado en 840 reseñas de clientes</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Fila Media e Inferior: Grid de Gráficos -->
+            <div class="charts-grid">
+                
+                <!-- Columna Izquierda: Gráfico Principal de Ventas Comparativas -->
+                <div class="chart-card main-chart-card">
+                    <div class="chart-card-header">
+                        <div>
+                            <h3 class="chart-title">Rendimiento Mensual de Ventas</h3>
+                            <p class="chart-subtitle">Comparativa anual de joyas vendidas y servicios de perforación (2025 vs 2026)</p>
+                        </div>
+                        <div class="chart-actions">
+                            <button class="btn-chart-action active" onclick="updateChartFilter('anual')">Anual</button>
+                            <button class="btn-chart-action" onclick="updateChartFilter('mes')">Mensual</button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="barChartResult"></canvas>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Donut de Distribución por Categoria -->
+                <div class="chart-card side-chart-card">
+                    <div class="chart-card-header">
+                        <h3 class="chart-title">Líneas Más Demandadas</h3>
+                    </div>
+                    <div class="chart-body doughnut-body">
+                        <div class="doughnut-container">
+                            <canvas id="doughnutChart"></canvas>
+                            <div class="doughnut-center-text">
+                                <span class="percentage">68%</span>
+                                <span class="label">Titanio Grado Médico</span>
+                            </div>
+                        </div>
+                        <ul class="category-legend">
+                            <li>
+                                <span class="dot legend-titanio"></span>
+                                <span class="cat-name">Titanio ASTM F-136</span>
+                                <span class="cat-val">68%</span>
+                            </li>
+                            <li>
+                                <span class="dot legend-acero"></span>
+                                <span class="cat-name">Acero Quirúrgico 316L</span>
+                                <span class="cat-val">22%</span>
+                            </li>
+                            <li>
+                                <span class="dot legend-oro"></span>
+                                <span class="cat-name">Oro 14K / Bioplast</span>
+                                <span class="cat-val">10%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Gráfico Inferior Ancho: Flujo Semanal de Citas y Ventas -->
+                <div class="chart-card wave-chart-card">
+                    <div class="chart-card-header">
+                        <div>
+                            <h3 class="chart-title">Tendencia de Reservas y Ventas Semanales</h3>
+                            <p class="chart-subtitle">Flujo de clientes para perforación e ingreos diarios en estudio</p>
+                        </div>
+                        <div class="chart-legend-custom">
+                            <span class="legend-item"><span class="dot gold-dot"></span> Ventas en Tienda</span>
+                            <span class="legend-item"><span class="dot cyan-dot"></span> Citas Confirmadas</span>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="waveChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript Principal -->
+    <script src="../static/js/main_ventas.js"></script>
+</body>
+</html>
